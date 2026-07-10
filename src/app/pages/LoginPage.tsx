@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, ArrowRight, Shield, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
-import acecertyLogoDark from '../../imports/acecerty-logo-cropped.png';
+//import acecertyLogoDark from '../imports/acecerty-logo-cropped.png';
+const acecertyLogoDark = "";
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useTheme } from '../context/ThemeContext';
 
