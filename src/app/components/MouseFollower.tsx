@@ -12,21 +12,17 @@ export function MouseFollower() {
   const dotX = useMotionValue(-400);
   const dotY = useMotionValue(-400);
 
-  /* Outer glow — heavy spring for trailing effect */
   const glowX = useSpring(rawX, { mass: 0.3, damping: 18, stiffness: 120 });
   const glowY = useSpring(rawY, { mass: 0.3, damping: 18, stiffness: 120 });
 
-  /* Inner ring — medium spring */
   const ringX = useSpring(rawX, { mass: 0.15, damping: 14, stiffness: 200 });
   const ringY = useSpring(rawY, { mass: 0.15, damping: 14, stiffness: 200 });
 
-  /* Dot — tight spring, near-instant */
   const springDotX = useSpring(dotX, { mass: 0.05, damping: 10, stiffness: 500 });
   const springDotY = useSpring(dotY, { mass: 0.05, damping: 10, stiffness: 500 });
 
   useEffect(() => {
     const GLOW_R = 300;
-    const RING_R = 20;
     const DOT_R = 4;
 
     const onMove = (e: MouseEvent) => {
@@ -61,12 +57,12 @@ export function MouseFollower() {
 
   const accent = '#00A4AC';
   const glowColor = isDark
-    ? `radial-gradient(circle, rgba(0,164,172,0.13) 0%, rgba(0,164,172,0.04) 40%, transparent 70%)`
-    : `radial-gradient(circle, rgba(0,164,172,0.08) 0%, rgba(0,164,172,0.02) 40%, transparent 70%)`;
+    ? 'radial-gradient(circle, rgba(0,164,172,0.13) 0%, rgba(0,164,172,0.04) 40%, transparent 70%)'
+    : 'radial-gradient(circle, rgba(0,164,172,0.08) 0%, rgba(0,164,172,0.02) 40%, transparent 70%)';
 
   return (
     <>
-      {/* Ambient glow blob — large, slow trailing */}
+      {/* Ambient glow blob */}
       <motion.div
         style={{
           x: glowX,
@@ -86,9 +82,27 @@ export function MouseFollower() {
       />
 
       {/* Ring cursor */}
-      
+      <motion.div
+        style={{
+          x: ringX,
+          y: ringY,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: 40,
+          height: 40,
+          borderRadius: '50%',
+          border: `1.5px solid ${isHoveringInteractive ? accent : isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.18)'}`,
+          pointerEvents: 'none',
+          zIndex: 9998,
+          opacity: visible ? 1 : 0,
+          scale: isHoveringInteractive ? 1.6 : 1,
+          transition: 'opacity 0.3s ease, scale 0.2s ease, border-color 0.2s ease',
+          mixBlendMode: isDark ? 'screen' : 'multiply',
+        }}
+      />
 
-      {/* Dot — snaps directly to cursor */}
+      {/* Dot */}
       <motion.div
         style={{
           x: springDotX,

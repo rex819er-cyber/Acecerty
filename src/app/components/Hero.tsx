@@ -225,24 +225,7 @@ export function Hero() {
 
             <VideoPreview onOpen={() => setModalOpen(true)}>
               {/* Floating badge: Shield */}
-              <motion.div
-                initial={{ opacity: 0, x: -16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.45 }}
-                className="absolute -bottom-5 -left-5 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-2xl"
-                style={{ backgroundColor: cardBg, border: `1px solid ${cardBorder}`, backdropFilter: 'blur(16px)' }}
-              >
-                <div
-                  className="h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: '#00A2B6' }}
-                >
-                  <Shield className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold" style={{ color: textPrimary }}>Exam-Day Ready</p>
-                  <p className="text-xs" style={{ color: textMuted }}>Free Retake Guarantee</p>
-                </div>
-              </motion.div>
+              
 
               {/* Floating badge: Certs */}
               <motion.div
@@ -267,13 +250,7 @@ export function Hero() {
               </motion.div>
 
               {/* Live indicator */}
-              <div
-                className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full"
-                style={{ backgroundColor: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)' }}
-              >
-                <span className="h-2 w-2 rounded-full animate-pulse" style={{ backgroundColor: '#00A2B6' }} />
-                <span className="text-white text-xs font-semibold">Live Training Preview</span>
-              </div>
+              
             </VideoPreview>
           </motion.div>
         </div>

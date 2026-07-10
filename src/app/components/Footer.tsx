@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Facebook, Twitter, Linkedin, Youtube, Send, CheckCircle } from 'lucide-react';
-import { ImageWithFallback } from './figma/ImageWithFallback';
-import acecertyLogo from '../../imports/acecerty-logo-cropped.png';
+import { AcecertyLogo } from './AcecertyLogo';
+import { useTheme } from '../context/ThemeContext';
 
 const LINKS = {
   Individuals: [
@@ -50,6 +50,7 @@ const SOCIALS = [
 ];
 
 export function Footer() {
+  const { isDark } = useTheme();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -120,7 +121,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-6">
           {/* Brand column */}
           <div className="lg:col-span-2">
-            
+            <div className="mb-5">
+              <AcecertyLogo isDark={true} height={26} />
+            </div>
             <p className="text-white/45 text-sm leading-relaxed mb-6 max-w-xs">
               Accelerated IT certification training designed to unlock new skills and
               fast-track your career. Trusted by 250,000+ professionals worldwide.
@@ -142,10 +145,21 @@ export function Footer() {
           {/* Link columns */}
           {Object.entries(LINKS).map(([heading, items]) => (
             <div key={heading}>
-              
+              <h4
+                className="text-white mb-4"
+                style={{ fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}
+              >
+                {heading}
+              </h4>
               <ul className="flex flex-col gap-2.5">
                 {items.map((item) => (
-                  null
+                  <li key={item}>
+                    <button
+                      className="text-sm text-white/40 hover:text-white/80 transition-colors text-left"
+                    >
+                      {item}
+                    </button>
+                  </li>
                 ))}
               </ul>
             </div>

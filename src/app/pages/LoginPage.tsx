@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, ArrowRight, Shield, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
-//import acecertyLogoDark from '../imports/acecerty-logo-cropped.png';
-const acecertyLogoDark = "";
-import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { AcecertyLogo } from '../components/AcecertyLogo';
 import { useTheme } from '../context/ThemeContext';
 
 type Tab = 'signin' | 'signup';
@@ -54,7 +52,7 @@ export default function LoginPage() {
       >
         {/* Logo — always white on dark panel */}
         <Link to="/">
-          
+          <AcecertyLogo isDark={true} height={26} />
         </Link>
 
         {/* Mid copy */}
@@ -103,7 +101,7 @@ export default function LoginPage() {
           {/* Mobile logo */}
           <div className="lg:hidden mb-8 flex justify-center">
             <Link to="/">
-              <ImageWithFallback src={acecertyLogoDark} alt="Acecerty" className="h-8 w-auto" />
+              <AcecertyLogo isDark={isDark} height={28} />
             </Link>
           </div>
 
