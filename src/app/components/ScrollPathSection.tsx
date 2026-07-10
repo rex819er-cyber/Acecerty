@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 import { Zap, Shield, Globe } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 const WAYPOINTS = [
   { icon: Zap, title: 'Accelerated Learning', desc: 'Intensive bootcamps that compress months of study into days of high-impact training.', x: '10%', y: '18%' },
@@ -11,8 +10,6 @@ const WAYPOINTS = [
 
 export function ScrollPathSection() {
   const ref = useRef<HTMLDivElement>(null);
-  const { isDark } = useTheme();
-
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -21,17 +18,11 @@ export function ScrollPathSection() {
   const rawLength = useTransform(scrollYProgress, [0.05, 0.75], [0, 1]);
   const pathLength = useSpring(rawLength, { stiffness: 60, damping: 20 });
 
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)';
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
-  const strokeBg = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
 
   return (
     <section
       ref={ref}
-      style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif', position: 'relative', overflow: 'hidden' }}
+      className="bg-background" style={{ fontFamily: 'var(--ace-font)', position: 'relative', overflow: 'hidden' }}
       className="py-24 px-4"
     >
       <div className="max-w-7xl mx-auto">
@@ -41,7 +32,7 @@ export function ScrollPathSection() {
             Your Journey
           </p>
           <h2
-            style={{ color: textPrimary, fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 800, lineHeight: 1.1 }}
+            className="text-foreground" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 800, lineHeight: 1.1 }}
           >
             From novice to certified in three steps
           </h2>
@@ -58,7 +49,7 @@ export function ScrollPathSection() {
             <path
               d="M 80 80 C 200 80, 300 220, 500 220 C 700 220, 800 360, 920 380"
               fill="none"
-              stroke={strokeBg}
+              stroke={'var(--border)'}
               strokeWidth="2"
               strokeDasharray="8 6"
             />
@@ -92,8 +83,8 @@ export function ScrollPathSection() {
               <div
                 className="rounded-2xl p-5 shadow-lg"
                 style={{
-                  backgroundColor: cardBg,
-                  border: `1px solid ${cardBorder}`,
+                  backgroundColor: 'var(--card)',
+                  border: '1px solid var(--border)',
                   width: 220,
                   backdropFilter: 'blur(12px)',
                 }}
@@ -104,8 +95,8 @@ export function ScrollPathSection() {
                 >
                   <Icon className="h-5 w-5" style={{ color: '#00A2B6' }} />
                 </div>
-                <p className="font-bold mb-1" style={{ color: textPrimary, fontSize: '0.9rem' }}>{title}</p>
-                <p className="leading-relaxed" style={{ color: textMuted, fontSize: '0.8rem' }}>{desc}</p>
+                <p className="font-bold mb-1 text-foreground" style={{ fontSize: '0.9rem' }}>{title}</p>
+                <p className="leading-relaxed text-muted-foreground" style={{ fontSize: '0.8rem' }}>{desc}</p>
                 {/* Step dot */}
                 <div
                   className="mt-3 flex items-center gap-1.5"

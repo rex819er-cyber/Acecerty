@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Clock, Users } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 const IMG = 'https://wp.ituonline.com/wp-content/uploads/2023';
 
@@ -58,16 +57,9 @@ const CARDS = [
 
 export function AccordionCarousel() {
   const [active, setActive] = useState(0);
-  const { isDark } = useTheme();
-
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)';
-  const cardDark = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
 
   return (
-    <section style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }} className="py-20 px-4">
+    <section className="py-20 px-4 bg-background" style={{ fontFamily: 'var(--ace-font)' }}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12 flex flex-col sm:flex-row sm:items-end gap-4 justify-between">
@@ -75,7 +67,7 @@ export function AccordionCarousel() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#00A2B6' }}>
               Course Library
             </p>
-            <SplitHeading text="Top Certifications" textColor={textPrimary} />
+            <SplitHeading text="Top Certifications" textColor='var(--foreground)' />
           </div>
           <a
             href="/courses"
@@ -103,8 +95,8 @@ export function AccordionCarousel() {
                   height: 384,
                   borderRadius: 24,
                   overflow: 'hidden',
-                  border: `1px solid ${isActive ? card.color + '60' : cardBorder}`,
-                  backgroundColor: cardDark,
+                  border: `1px solid ${isActive ? card.color + '60' : 'var(--border)'}`,
+                  backgroundColor: 'var(--card)',
                 }}
               >
                 {/* Collapsed state */}
@@ -180,21 +172,20 @@ export function AccordionCarousel() {
                           {card.tagline}
                         </p>
                         <h3
-                          className="mb-3 leading-snug"
-                          style={{ color: textPrimary, fontSize: '1.05rem', fontWeight: 700 }}
+                          className="mb-3 leading-snug text-foreground" style={{ fontSize: '1.05rem', fontWeight: 700 }}
                         >
                           {card.title}
                         </h3>
-                        <p className="text-xs mb-5 leading-relaxed" style={{ color: textMuted }}>
+                        <p className="text-xs mb-5 leading-relaxed text-muted-foreground">
                           {card.desc}
                         </p>
 
                         <div className="flex items-center gap-4 mb-5">
-                          <div className="flex items-center gap-1.5 text-xs" style={{ color: textMuted }}>
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                             <Clock className="h-3.5 w-3.5" />
                             {card.duration}
                           </div>
-                          <div className="flex items-center gap-1.5 text-xs" style={{ color: textMuted }}>
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                             <Users className="h-3.5 w-3.5" />
                             {card.students}
                           </div>
@@ -202,8 +193,8 @@ export function AccordionCarousel() {
 
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-xs" style={{ color: textMuted }}>From</p>
-                            <p className="font-black" style={{ color: textPrimary, fontSize: '1.25rem' }}>
+                            <p className="text-xs text-muted-foreground">From</p>
+                            <p className="font-black text-foreground" style={{ fontSize: '1.25rem' }}>
                               ₦{card.price.toLocaleString()}
                             </p>
                           </div>
@@ -243,7 +234,7 @@ export function AccordionCarousel() {
               style={{
                 width: i === active ? 24 : 6,
                 height: 6,
-                backgroundColor: i === active ? '#00A2B6' : (isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'),
+                backgroundColor: i === active ? '#00A2B6' : 'var(--border)',
               }}
             />
           ))}

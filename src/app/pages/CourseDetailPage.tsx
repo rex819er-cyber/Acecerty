@@ -11,32 +11,24 @@ import { COURSES } from '../data/courses';
 import { getCourseDetail, DEFAULT_DETAIL } from '../data/courseDetails';
 import type { CurriculumModule } from '../data/courseDetails';
 import { useCart } from '../context/CartContext';
-import { useTheme } from '../context/ThemeContext';
 
 function ModuleRow({ mod, index, defaultOpen }: { mod: CurriculumModule; index: number; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(!!defaultOpen);
-  const { isDark } = useTheme();
-  const border = isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb';
-  const bg = isDark ? '#0d0d0d' : '#fff';
-  const hoverBg = isDark ? '#111' : '#f9fafb';
-  const textPrimary = isDark ? '#fff' : '#111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.5)' : '#6b7280';
   return (
-    <div style={{ border: `1px solid ${border}`, borderRadius: 12, marginBottom: 8, backgroundColor: bg }}>
+    <div className="rounded-xl border border-border bg-card mb-2">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-5 py-4 text-left transition-colors"
-        style={{ borderRadius: 12, color: textPrimary }}
+        className="w-full flex items-center justify-between px-5 py-4 text-left transition-colors rounded-xl text-foreground"
       >
         <div className="flex items-center gap-3">
-          <span className="text-sm font-bold tabular-nums" style={{ color: '#00A2B6', minWidth: 20 }}>
+          <span className="text-sm font-bold tabular-nums" style={{ color: 'var(--ace-brand)', minWidth: 20 }}>
             {String(index + 1).padStart(2, '0')}
           </span>
           <span className="font-semibold text-sm">{mod.title}</span>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0 ml-4">
-          <span className="text-xs" style={{ color: textMuted }}>{mod.duration}</span>
-          {open ? <ChevronUp className="h-4 w-4" style={{ color: textMuted }} /> : <ChevronDown className="h-4 w-4" style={{ color: textMuted }} />}
+          <span className="text-xs text-muted-foreground">{mod.duration}</span>
+          {open ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
         </div>
       </button>
       <AnimatePresence initial={false}>
@@ -50,8 +42,8 @@ function ModuleRow({ mod, index, defaultOpen }: { mod: CurriculumModule; index: 
           >
             <ul className="px-5 pb-4 flex flex-col gap-2">
               {mod.lessons.map((lesson, i) => (
-                <li key={i} className="flex items-center gap-3 text-sm" style={{ color: textMuted }}>
-                  <Play className="h-3 w-3 flex-shrink-0" style={{ color: '#00A2B6' }} />
+                <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <Play className="h-3 w-3 flex-shrink-0" style={{ color: 'var(--ace-brand)' }} />
                   {lesson}
                 </li>
               ))}
@@ -65,15 +57,14 @@ function ModuleRow({ mod, index, defaultOpen }: { mod: CurriculumModule; index: 
 
 export default function CourseDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { isDark } = useTheme();
   const { addToCart, items } = useCart();
 
   const course = COURSES.find((c) => c.id === id);
   if (!course) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-6" style={{ backgroundColor: isDark ? '#050505' : '#FAF9F6' }}>
-        <p className="text-2xl font-bold" style={{ color: isDark ? '#fff' : '#111' }}>Course not found</p>
-        <Link to="/courses" className="px-6 py-3 rounded-full text-sm font-bold text-white" style={{ backgroundColor: '#00A2B6' }}>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-6" style={{ backgroundColor: 'var(--background)' }}>
+        <p className="text-2xl font-bold" style={{ color: 'var(--foreground)' }}>Course not found</p>
+        <Link to="/courses" className="px-6 py-3 rounded-full text-sm font-bold text-white" style={{ backgroundColor: 'var(--ace-brand)' }}>
           Browse Courses
         </Link>
       </div>
@@ -84,11 +75,6 @@ export default function CourseDetailPage() {
   const detail = rawDetail ?? { ...DEFAULT_DETAIL, id: course.id };
 
   const isInCart = items.some((i) => i.course.id === course.id);
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const cardBg = isDark ? '#0d0d0d' : '#fff';
-  const textPrimary = isDark ? '#fff' : '#111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.5)' : '#6b7280';
-  const border = isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb';
 
   const handleEnroll = () => {
     if (!isInCart) addToCart(course);
@@ -98,7 +84,7 @@ export default function CourseDetailPage() {
   const totalLessons = detail.curriculum.reduce((sum, m) => sum + m.lessons.length, 0);
 
   return (
-    <div style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'var(--ace-font)' }}>
       {/* Hero */}
       <div
         className="pt-20 sm:pt-24 pb-10 px-4"
@@ -117,7 +103,7 @@ export default function CourseDetailPage() {
           <div className="grid lg:grid-cols-[1fr_360px] gap-8 items-start">
             {/* Left: info */}
             <div>
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold mb-4" style={{ backgroundColor: 'rgba(0,162,182,0.25)', color: '#00D4EC' }}>
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold mb-4" style={{ backgroundColor: 'var(--ace-brand-light)', color: 'var(--ace-brand)' }}>
                 {course.category}
               </span>
               <h1 className="text-white font-black mb-3 leading-tight" style={{ fontSize: 'clamp(1.6rem,3.5vw,2.6rem)' }}>
@@ -152,7 +138,7 @@ export default function CourseDetailPage() {
               {/* Instructor mini */}
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black text-white"
-                  style={{ backgroundColor: '#00A2B6' }}>
+                  style={{ backgroundColor: 'var(--ace-brand)' }}>
                   {detail.instructor.avatar}
                 </div>
                 <div>
@@ -169,7 +155,6 @@ export default function CourseDetailPage() {
                 detail={detail}
                 isInCart={isInCart}
                 onEnroll={handleEnroll}
-                isDark={isDark}
                 totalLessons={totalLessons}
               />
             </div>
@@ -185,42 +170,41 @@ export default function CourseDetailPage() {
             {/* Highlights grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-10">
               {detail.highlights.map((h) => (
-                <div key={h.label} className="rounded-2xl p-4 flex items-center gap-3"
-                  style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
+                <div key={h.label} className="rounded-2xl p-4 flex items-center gap-3 bg-card border border-border">
                   <span className="text-2xl">{h.icon}</span>
                   <div>
-                    <p className="text-xs" style={{ color: textMuted }}>{h.label}</p>
-                    <p className="text-sm font-bold" style={{ color: textPrimary }}>{h.value}</p>
+                    <p className="text-xs text-muted-foreground">{h.label}</p>
+                    <p className="text-sm font-bold text-foreground">{h.value}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* What you'll learn */}
-            <Section title="What You'll Learn" isDark={isDark}>
+            <Section title="What You'll Learn">
               <div className="grid sm:grid-cols-2 gap-3">
                 {detail.outcomes.map((o, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: '#00A2B6' }} />
-                    <span className="text-sm" style={{ color: textMuted }}>{o}</span>
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--ace-brand)' }} />
+                    <span className="text-sm text-muted-foreground">{o}</span>
                   </div>
                 ))}
               </div>
             </Section>
 
             {/* Curriculum */}
-            <Section title={`Curriculum · ${detail.curriculum.length} modules · ${totalLessons} lessons`} isDark={isDark}>
+            <Section title={`Curriculum · ${detail.curriculum.length} modules · ${totalLessons} lessons`}>
               {detail.curriculum.map((mod, i) => (
                 <ModuleRow key={i} mod={mod} index={i} defaultOpen={i === 0} />
               ))}
             </Section>
 
             {/* Requirements */}
-            <Section title="Requirements" isDark={isDark}>
+            <Section title="Requirements">
               <ul className="flex flex-col gap-2">
                 {detail.requirements.map((r, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm" style={{ color: textMuted }}>
-                    <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: '#00A2B6' }} />
+                  <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
+                    <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: 'var(--ace-brand)' }} />
                     {r}
                   </li>
                 ))}
@@ -228,11 +212,11 @@ export default function CourseDetailPage() {
             </Section>
 
             {/* Who is this for */}
-            <Section title="Who Is This For?" isDark={isDark}>
+            <Section title="Who Is This For?">
               <ul className="flex flex-col gap-2">
                 {detail.audience.map((a, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm" style={{ color: textMuted }}>
-                    <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: '#00A2B6' }} />
+                  <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
+                    <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: 'var(--ace-brand)' }} />
                     {a}
                   </li>
                 ))}
@@ -240,25 +224,25 @@ export default function CourseDetailPage() {
             </Section>
 
             {/* Instructor */}
-            <Section title="Your Instructor" isDark={isDark}>
+            <Section title="Your Instructor">
               <div className="flex items-start gap-5">
                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-xl font-black text-white flex-shrink-0"
-                  style={{ backgroundColor: '#00A2B6' }}>
+                  style={{ backgroundColor: 'var(--ace-brand)' }}>
                   {detail.instructor.avatar}
                 </div>
                 <div>
-                  <p className="font-bold text-base mb-0.5" style={{ color: textPrimary }}>{detail.instructor.name}</p>
-                  <p className="text-sm mb-2" style={{ color: '#00A2B6' }}>{detail.instructor.credentials}</p>
-                  <p className="text-xs mb-3" style={{ color: textMuted }}>{detail.instructor.experience} experience</p>
+                  <p className="font-bold text-base mb-0.5 text-foreground">{detail.instructor.name}</p>
+                  <p className="text-sm mb-2" style={{ color: 'var(--ace-brand)' }}>{detail.instructor.credentials}</p>
+                  <p className="text-xs mb-3 text-muted-foreground">{detail.instructor.experience} experience</p>
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {detail.instructor.certs.map((c) => (
                       <span key={c} className="px-2.5 py-1 rounded-full text-xs font-semibold"
-                        style={{ backgroundColor: isDark ? 'rgba(0,162,182,0.15)' : 'rgba(0,162,182,0.10)', color: '#00A2B6' }}>
+                        style={{ backgroundColor: 'var(--ace-brand-light)', color: 'var(--ace-brand)' }}>
                         {c}
                       </span>
                     ))}
                   </div>
-                  <p className="text-sm leading-relaxed" style={{ color: textMuted }}>{detail.instructor.bio}</p>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{detail.instructor.bio}</p>
                 </div>
               </div>
             </Section>
@@ -271,26 +255,25 @@ export default function CourseDetailPage() {
               detail={detail}
               isInCart={isInCart}
               onEnroll={handleEnroll}
-              isDark={isDark}
               totalLessons={totalLessons}
             />
           </div>
         </div>
 
         {/* Mobile enroll bar */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 p-4"
-          style={{ backgroundColor: isDark ? 'rgba(5,5,5,0.97)' : 'rgba(255,255,255,0.97)', borderTop: `1px solid ${border}`, backdropFilter: 'blur(16px)' }}>
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 p-4 bg-background/95 border-t border-border"
+          style={{ backdropFilter: 'blur(16px)' }}>
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="font-black text-xl" style={{ color: '#00A2B6' }}>₦60,000</p>
+              <p className="font-black text-xl" style={{ color: 'var(--ace-brand)' }}>₦60,000</p>
               {course.originalPrice && (
-                <p className="text-xs line-through" style={{ color: textMuted }}>₦{course.originalPrice.toLocaleString()}</p>
+                <p className="text-xs line-through text-muted-foreground">₦{course.originalPrice.toLocaleString()}</p>
               )}
             </div>
             <button
               onClick={handleEnroll}
               className="flex-1 max-w-xs py-3.5 rounded-full text-sm font-bold text-white transition-all active:scale-95"
-              style={{ backgroundColor: isInCart ? '#047857' : '#00A2B6' }}
+              style={{ backgroundColor: isInCart ? '#047857' : 'var(--ace-brand)' }}
             >
               {isInCart ? '✓ Added to Cart' : 'Enrol Now — ₦60,000'}
             </button>
@@ -301,31 +284,23 @@ export default function CourseDetailPage() {
   );
 }
 
-function Section({ title, children, isDark }: { title: string; children: React.ReactNode; isDark: boolean }) {
-  const border = isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb';
-  const textPrimary = isDark ? '#fff' : '#111';
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mb-10 pb-10" style={{ borderBottom: `1px solid ${border}` }}>
-      <h2 className="text-lg font-black mb-5" style={{ color: textPrimary }}>{title}</h2>
+    <div className="mb-10 pb-10 border-b border-border">
+      <h2 className="text-lg font-black mb-5 text-foreground">{title}</h2>
       {children}
     </div>
   );
 }
 
 function EnrollCard({
-  course, detail, isInCart, onEnroll, isDark, totalLessons,
+  course, detail, isInCart, onEnroll, totalLessons,
 }: {
   course: Course;
-  detail: any; isInCart: boolean; onEnroll: () => void; isDark: boolean; totalLessons: number;
+  detail: any; isInCart: boolean; onEnroll: () => void; totalLessons: number;
 }) {
-  const cardBg = isDark ? '#0d0d0d' : '#fff';
-  const border = isDark ? 'rgba(255,255,255,0.10)' : '#e5e7eb';
-  const textPrimary = isDark ? '#fff' : '#111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.5)' : '#6b7280';
-
   return (
-    <div className="rounded-3xl overflow-hidden shadow-2xl"
-      style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
+    <div className="rounded-3xl overflow-hidden shadow-2xl bg-card border border-border">
       {/* Hero preview */}
       <div className="h-40 relative flex items-center justify-center"
         style={{ background: course.gradient ?? 'linear-gradient(135deg,#0B1D3A,#1a3a6e)' }}>
@@ -338,9 +313,9 @@ function EnrollCard({
 
       <div className="p-6">
         <div className="mb-4">
-          <span className="text-3xl font-black" style={{ color: '#00A2B6' }}>₦60,000</span>
+          <span className="text-3xl font-black" style={{ color: 'var(--ace-brand)' }}>₦60,000</span>
           {course.originalPrice && (
-            <span className="text-sm line-through ml-2" style={{ color: textMuted }}>₦{course.originalPrice.toLocaleString()}</span>
+            <span className="text-sm line-through ml-2 text-muted-foreground">₦{course.originalPrice.toLocaleString()}</span>
           )}
         </div>
 
@@ -348,7 +323,7 @@ function EnrollCard({
           onClick={onEnroll}
           className="w-full py-4 rounded-2xl text-base font-bold text-white transition-all active:scale-[0.97] mb-3"
           style={{
-            backgroundColor: isInCart ? '#047857' : '#00A2B6',
+            backgroundColor: isInCart ? '#047857' : 'var(--ace-brand)',
             boxShadow: isInCart ? 'none' : '0 4px 20px rgba(0,162,182,0.35)',
           }}
         >
@@ -357,8 +332,7 @@ function EnrollCard({
 
         <Link
           to="/checkout"
-          className="block w-full py-3.5 rounded-2xl text-sm font-semibold text-center transition-all active:scale-[0.97]"
-          style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)', color: textPrimary }}
+          className="block w-full py-3.5 rounded-2xl text-sm font-semibold text-center transition-all active:scale-[0.97] bg-muted text-foreground"
           onClick={() => { if (!isInCart) onEnroll(); }}
         >
           Buy Now
@@ -372,18 +346,17 @@ function EnrollCard({
             { icon: Users, label: `${detail.students.toLocaleString()} enrolled` },
             { icon: ShoppingCart, label: '30-day satisfaction guarantee' },
           ].map(({ icon: Icon, label }) => (
-            <div key={label} className="flex items-center gap-3 text-xs" style={{ color: textMuted }}>
-              <Icon className="h-4 w-4 flex-shrink-0" style={{ color: '#00A2B6' }} />
+            <div key={label} className="flex items-center gap-3 text-xs text-muted-foreground">
+              <Icon className="h-4 w-4 flex-shrink-0" style={{ color: 'var(--ace-brand)' }} />
               {label}
             </div>
           ))}
         </div>
 
         {course.nextDate && (
-          <div className="mt-5 rounded-2xl px-4 py-3 text-center"
-            style={{ backgroundColor: isDark ? 'rgba(0,162,182,0.10)' : 'rgba(0,162,182,0.08)' }}>
-            <p className="text-xs" style={{ color: textMuted }}>Next cohort starts</p>
-            <p className="font-bold text-sm mt-0.5" style={{ color: '#00A2B6' }}>{course.nextDate}</p>
+          <div className="mt-5 rounded-2xl px-4 py-3 text-center" style={{ backgroundColor: 'var(--ace-brand-light)' }}>
+            <p className="text-xs text-muted-foreground">Next cohort starts</p>
+            <p className="font-bold text-sm mt-0.5" style={{ color: 'var(--ace-brand)' }}>{course.nextDate}</p>
           </div>
         )}
       </div>

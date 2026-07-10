@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { ClipboardCheck, Clock, FileText, BarChart2, ShoppingCart, Star, Search, Play } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useTheme } from '../context/ThemeContext';
 
 type Domain = 'All' | 'Cybersecurity' | 'Cloud' | 'Networking' | 'Management' | 'Privacy';
 
@@ -48,14 +47,8 @@ const DIFFICULTY_COLOR: Record<string, { bg: string; text: string }> = {
 
 function ExamCard({ exam }: { exam: PracticeExam }) {
   const { addToCart } = useCart();
-  const { isDark } = useTheme();
   const diff = DIFFICULTY_COLOR[exam.difficulty];
   const pctOff = Math.round(((exam.originalPrice - exam.price) / exam.originalPrice) * 100);
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
-  const statBg = isDark ? 'rgba(255,255,255,0.05)' : '#f9fafb';
 
   const courseForCart = {
     id: exam.id,
@@ -75,8 +68,7 @@ function ExamCard({ exam }: { exam: PracticeExam }) {
 
   return (
     <article
-      className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-      style={{ backgroundColor: cardBg, border: `1px solid ${cardBorder}` }}
+      className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col bg-card border border-border"
     >
       {/* Colour band */}
       <div
@@ -104,7 +96,7 @@ function ExamCard({ exam }: { exam: PracticeExam }) {
       </div>
 
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="mb-1 leading-snug" style={{ fontSize: '0.9rem', fontWeight: 700, color: textPrimary }}>
+        <h3 className="mb-1 leading-snug text-foreground" style={{ fontSize: '0.9rem', fontWeight: 700 }}>
           {exam.cert} Practice Exams
         </h3>
 
@@ -115,13 +107,13 @@ function ExamCard({ exam }: { exam: PracticeExam }) {
               <Star
                 key={i}
                 className="h-3 w-3"
-                fill={i < Math.floor(exam.rating) ? '#00A2B6' : 'none'}
-                style={{ color: '#00A2B6' }}
+                fill={i < Math.floor(exam.rating) ? 'var(--ace-brand)' : 'none'}
+                style={{ color: 'var(--ace-brand)' }}
               />
             ))}
           </div>
-          <span className="text-xs font-semibold" style={{ color: textPrimary }}>{exam.rating}</span>
-          <span className="text-xs" style={{ color: textMuted }}>({exam.reviews.toLocaleString()})</span>
+          <span className="text-xs font-semibold text-foreground">{exam.rating}</span>
+          <span className="text-xs text-muted-foreground">({exam.reviews.toLocaleString()})</span>
         </div>
 
         {/* Stats row */}
@@ -131,10 +123,10 @@ function ExamCard({ exam }: { exam: PracticeExam }) {
             { icon: ClipboardCheck, value: `${exam.exams}`, label: 'Exams' },
             { icon: Clock, value: `${exam.duration}m`, label: 'Per Exam' },
           ].map(({ icon: Icon, value, label }) => (
-            <div key={label} className="text-center rounded-xl py-2 px-1" style={{ backgroundColor: statBg }}>
-              <Icon className="h-3.5 w-3.5 mx-auto mb-1" style={{ color: textMuted }} />
-              <p className="text-xs font-bold" style={{ color: textPrimary }}>{value}</p>
-              <p className="text-[10px]" style={{ color: textMuted }}>{label}</p>
+            <div key={label} className="text-center rounded-xl py-2 px-1 bg-muted">
+              <Icon className="h-3.5 w-3.5 mx-auto mb-1 text-muted-foreground" />
+              <p className="text-xs font-bold text-foreground">{value}</p>
+              <p className="text-[10px] text-muted-foreground">{label}</p>
             </div>
           ))}
         </div>
@@ -146,26 +138,25 @@ function ExamCard({ exam }: { exam: PracticeExam }) {
           >
             {exam.difficulty}
           </span>
-          <span className="text-[10px] text-gray-400">Updated {exam.updated}</span>
+          <span className="text-[10px] text-muted-foreground">Updated {exam.updated}</span>
         </div>
 
         <div className="flex items-center justify-between mb-4">
-          <span className="font-black" style={{ fontSize: '1.2rem', color: '#00A2B6' }}>₦60,000</span>
-          <span className="text-xs" style={{ color: textMuted }}>90-day access</span>
+          <span className="font-black text-ace-brand" style={{ fontSize: '1.2rem' }}>₦60,000</span>
+          <span className="text-xs text-muted-foreground">90-day access</span>
         </div>
 
         <div className="flex gap-2">
           <button
             onClick={() => addToCart(courseForCart)}
             className="flex-1 py-3 rounded-xl text-sm font-semibold text-white flex items-center justify-center gap-2 transition-all active:scale-[0.97] hover:opacity-90"
-            style={{ backgroundColor: '#00A2B6' }}
+            style={{ backgroundColor: 'var(--ace-brand)' }}
           >
             <ShoppingCart className="h-4 w-4" /> Add
           </button>
           <Link
             to={`/practice-exams/${exam.certCode.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-            className="flex-1 py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.97]"
-            style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#f3f4f6', color: isDark ? '#fff' : '#111' }}
+            className="flex-1 py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.97] bg-muted text-foreground"
           >
             <Play className="h-4 w-4" /> Try Free
           </Link>
@@ -178,12 +169,6 @@ function ExamCard({ exam }: { exam: PracticeExam }) {
 export default function PracticeExamsPage() {
   const [activeDomain, setActiveDomain] = useState<Domain>('All');
   const [query, setQuery] = useState('');
-  const { isDark } = useTheme();
-
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
-  const filterBg = isDark ? '#111111' : '#FFFFFF';
-  const filterBorder = isDark ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
 
   const filtered = PRACTICE_EXAMS.filter((e) => {
     const matchDomain = activeDomain === 'All' || e.domain === activeDomain;
@@ -192,13 +177,13 @@ export default function PracticeExamsPage() {
   });
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'var(--ace-font)' }}>
       {/* Hero */}
       <div style={{ background: 'linear-gradient(135deg,#050D1A 0%,#0A1628 100%)' }} className="pt-24 sm:pt-28 pb-14 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2 mb-4">
-            <ClipboardCheck className="h-5 w-5" style={{ color: '#00A2B6' }} />
-            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#00A2B6' }}>Practice Exams</p>
+            <ClipboardCheck className="h-5 w-5" style={{ color: 'var(--ace-brand)' }} />
+            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ace-brand)' }}>Practice Exams</p>
           </div>
           <h1 className="text-white mb-3 leading-tight" style={{ fontSize: 'clamp(1.8rem,4vw,3rem)', fontWeight: 800 }}>
             Exam-Realistic Practice Tests
@@ -226,14 +211,14 @@ export default function PracticeExamsPage() {
 
           {/* Search */}
           <div className="relative max-w-lg">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search by certification or code…"
-              className="w-full pl-12 pr-4 py-4 rounded-2xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 shadow-lg"
-              style={{ '--tw-ring-color': '#F97316' } as React.CSSProperties}
+              className="w-full pl-12 pr-4 py-4 rounded-2xl text-sm bg-white/10 text-white placeholder-white/40 border border-white/15 focus:outline-none focus:ring-2 shadow-lg"
+              style={{ '--tw-ring-color': 'var(--ace-brand)' } as React.CSSProperties}
             />
           </div>
         </div>
@@ -248,21 +233,21 @@ export default function PracticeExamsPage() {
               onClick={() => setActiveDomain(d)}
               className="px-4 py-2 rounded-full text-sm font-semibold transition-all"
               style={{
-                backgroundColor: activeDomain === d ? '#00A2B6' : filterBg,
-                color: activeDomain === d ? '#fff' : textMuted,
-                border: `1px solid ${activeDomain === d ? '#00A2B6' : filterBorder}`,
+                backgroundColor: activeDomain === d ? 'var(--ace-brand)' : 'var(--card)',
+                color: activeDomain === d ? '#fff' : 'var(--muted-foreground)',
+                border: `1px solid ${activeDomain === d ? 'var(--ace-brand)' : 'var(--border)'}`,
               }}
             >
               {d}
             </button>
           ))}
-          <span className="ml-auto self-center text-sm" style={{ color: textMuted }}>{filtered.length} exams</span>
+          <span className="ml-auto self-center text-sm text-muted-foreground">{filtered.length} exams</span>
         </div>
 
         {filtered.length === 0 ? (
           <div className="text-center py-24">
-            <ClipboardCheck className="h-12 w-12 text-gray-200 mx-auto mb-4" />
-            <p className="text-gray-500 font-medium">No practice exams found</p>
+            <ClipboardCheck className="h-12 w-12 text-border mx-auto mb-4" />
+            <p className="text-muted-foreground font-medium">No practice exams found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">

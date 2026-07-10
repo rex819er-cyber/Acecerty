@@ -10,7 +10,6 @@ import { TestimonialsSection } from '../components/TestimonialsSection';
 import { SpriteCrowd } from '../components/SpriteCrowd';
 import { BlogSection } from '../components/BlogSection';
 import { ScrollPathSection } from '../components/ScrollPathSection';
-import { useTheme } from '../context/ThemeContext';
 
 const SECTIONS_TOP = [
   { Component: TrustLogos },
@@ -48,7 +47,6 @@ function AnimatedSection({
 }
 
 export default function HomePage() {
-  const { isDark } = useTheme();
   const shouldReduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
@@ -57,7 +55,7 @@ export default function HomePage() {
   const heroOpacity = useTransform(scrollY, [0, 350, 650], shouldReduceMotion ? [1, 1, 1] : [1, 1, 0.5]);
 
   return (
-    <div style={{ overflowX: 'hidden', position: 'relative', backgroundColor: isDark ? '#050505' : '#FAF9F6' }}>
+    <div style={{ overflowX: 'hidden', position: 'relative', backgroundColor: 'var(--background)' }}>
       <div ref={heroRef} style={{ position: 'relative', zIndex: 1 }}>
         <motion.div style={{ scale: heroScale, opacity: heroOpacity }}>
           <Hero />

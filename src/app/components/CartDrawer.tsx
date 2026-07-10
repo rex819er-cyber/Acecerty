@@ -9,7 +9,6 @@ export function CartDrawer() {
 
   return (
     <>
-      {/* Backdrop */}
       {isOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
@@ -18,21 +17,20 @@ export function CartDrawer() {
         />
       )}
 
-      {/* Drawer */}
       <div
-        className="fixed top-0 right-0 h-full z-50 flex flex-col shadow-2xl transition-transform duration-300"
+        className="fixed top-0 right-0 h-full z-50 flex flex-col shadow-2xl transition-transform duration-300 border-l border-border"
         style={{
           width: 420,
           maxWidth: '100vw',
-          backgroundColor: '#fff',
+          backgroundColor: 'var(--ace-surface)',
+          fontFamily: 'var(--ace-font)',
           transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
-          fontFamily: 'Inter, sans-serif',
         }}
       >
         {/* Header */}
         <div
-          className="flex items-center justify-between px-6 py-5 border-b border-gray-100"
-          style={{ backgroundColor: '#0B1D3A' }}
+          className="flex items-center justify-between px-6 py-5 border-b border-border"
+          style={{ background: 'linear-gradient(135deg,#050D1A,#0A1628)' }}
         >
           <div className="flex items-center gap-3">
             <ShoppingBag className="h-5 w-5 text-white" />
@@ -40,8 +38,8 @@ export function CartDrawer() {
               Cart{' '}
               {itemCount > 0 && (
                 <span
-                  className="ml-1 px-2 py-0.5 rounded-full text-xs font-bold"
-                  style={{ backgroundColor: '#00A2B6', color: '#fff' }}
+                  className="ml-1 px-2 py-0.5 rounded-full text-xs font-bold text-white"
+                  style={{ backgroundColor: 'var(--ace-brand)' }}
                 >
                   {itemCount}
                 </span>
@@ -60,28 +58,24 @@ export function CartDrawer() {
         <div className="relative flex-1 overflow-y-auto">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 px-6 text-center">
-              <div
-                className="h-20 w-20 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: '#F8FAFC' }}
-              >
-                <ShoppingBag className="h-9 w-9 text-gray-300" />
+              <div className="h-20 w-20 rounded-full flex items-center justify-center bg-muted">
+                <ShoppingBag className="h-9 w-9 text-muted-foreground" />
               </div>
-              <p className="text-gray-900 font-semibold text-lg">Your cart is empty</p>
-              <p className="text-gray-400 text-sm">Browse courses and add them here.</p>
+              <p className="text-foreground font-semibold text-lg">Your cart is empty</p>
+              <p className="text-muted-foreground text-sm">Browse courses and add them here.</p>
               <Link
                 to="/courses"
                 onClick={closeCart}
-                className="mt-2 px-6 py-3 rounded-full font-semibold text-white text-sm"
-                style={{ backgroundColor: '#00A2B6' }}
+                className="mt-2 px-6 py-3 rounded-full font-semibold text-sm text-white"
+                style={{ backgroundColor: 'var(--ace-brand)' }}
               >
                 Browse Courses
               </Link>
             </div>
           ) : (
-            <div className="flex flex-col divide-y divide-gray-100">
+            <div className="flex flex-col divide-y divide-border">
               {items.map(({ course, quantity }) => (
                 <div key={course.id} className="flex gap-4 p-5">
-                  {/* Thumbnail */}
                   <div
                     className="h-16 w-16 rounded-xl flex-shrink-0 overflow-hidden flex items-center justify-center"
                     style={{ background: course.gradient || '#0B1D3A' }}
@@ -99,40 +93,38 @@ export function CartDrawer() {
                     )}
                   </div>
 
-                  {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-gray-900 font-semibold text-sm leading-snug truncate">
+                    <p className="text-foreground font-semibold text-sm leading-snug truncate">
                       {course.title}
                     </p>
-                    <p className="text-gray-400 text-xs mt-0.5">{course.type === 'bootcamp' ? 'Bootcamp' : 'Online'} · {course.duration}</p>
+                    <p className="text-muted-foreground text-xs mt-0.5">
+                      {course.type === 'bootcamp' ? 'Bootcamp' : 'Online'} · {course.duration}
+                    </p>
                     <div className="flex items-center justify-between mt-2">
-                      {/* Quantity */}
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => updateQuantity(course.id, quantity - 1)}
-                          className="h-6 w-6 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                          className="h-6 w-6 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
                         >
-                          <Minus className="h-3 w-3 text-gray-500" />
+                          <Minus className="h-3 w-3 text-muted-foreground" />
                         </button>
-                        <span className="text-sm font-medium text-gray-700 w-5 text-center">{quantity}</span>
+                        <span className="text-sm font-medium text-foreground w-5 text-center">{quantity}</span>
                         <button
                           onClick={() => updateQuantity(course.id, quantity + 1)}
-                          className="h-6 w-6 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                          className="h-6 w-6 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
                         >
-                          <Plus className="h-3 w-3 text-gray-500" />
+                          <Plus className="h-3 w-3 text-muted-foreground" />
                         </button>
                       </div>
-                      {/* Price */}
-                      <span className="font-bold text-gray-900 text-sm">
+                      <span className="font-bold text-foreground text-sm">
                         ₦{(course.price * quantity).toLocaleString()}
                       </span>
                     </div>
                   </div>
 
-                  {/* Remove */}
                   <button
                     onClick={() => removeFromCart(course.id)}
-                    className="flex-shrink-0 h-8 w-8 rounded-lg flex items-center justify-center text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors"
+                    className="flex-shrink-0 h-8 w-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -144,30 +136,27 @@ export function CartDrawer() {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="border-t border-gray-100 p-6 flex flex-col gap-4">
-            {/* Subtotal */}
+          <div className="border-t border-border p-6 flex flex-col gap-4" style={{ backgroundColor: 'var(--ace-surface)' }}>
             <div className="flex items-center justify-between">
-              <span className="text-gray-500 text-sm font-medium">Subtotal</span>
-              <span className="text-gray-900 font-bold text-xl">
+              <span className="text-muted-foreground text-sm font-medium">Subtotal</span>
+              <span className="text-foreground font-bold text-xl">
                 ₦{subtotal.toLocaleString()}
               </span>
             </div>
-            <p className="text-gray-400 text-xs">
-              Taxes and fees calculated at checkout. Financing options available.
+            <p className="text-muted-foreground text-xs">
+              VAT and fees calculated at checkout.
             </p>
-            {/* Checkout CTA */}
             <Link
               to="/cart"
               onClick={closeCart}
-              className="w-full py-4 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98] shadow-lg"
-              style={{ backgroundColor: '#00A2B6' }}
+              className="w-full py-4 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98]"
+              style={{ backgroundColor: 'var(--ace-brand)', boxShadow: 'var(--ace-brand-glow) 0 4px 20px' }}
             >
               Proceed to Checkout <ArrowRight className="h-5 w-5" />
             </Link>
             <button
               onClick={closeCart}
-              className="w-full py-3 rounded-xl font-semibold border-2 text-gray-600 hover:bg-gray-50 transition-colors"
-              style={{ borderColor: '#e5e7eb' }}
+              className="w-full py-3 rounded-xl font-semibold border border-border text-foreground hover:bg-muted transition-colors"
             >
               Continue Shopping
             </button>

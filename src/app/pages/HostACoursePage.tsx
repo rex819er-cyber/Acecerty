@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { GraduationCap, Users, Globe, DollarSign, CheckCircle, ChevronRight, Building2, Star, BarChart2, Shield } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 const BENEFITS = [
   {
@@ -65,13 +64,7 @@ const EMPTY: FormData = { name: '', email: '', phone: '', company: '', certifica
 export default function HostACoursePage() {
   const [form, setForm] = useState<FormData>(EMPTY);
   const [submitted, setSubmitted] = useState(false);
-  const { isDark } = useTheme();
 
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
 
   const set = (k: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -83,14 +76,14 @@ export default function HostACoursePage() {
 
   const inputCls = `w-full px-4 py-3 rounded-xl border text-sm placeholder-gray-400 focus:outline-none focus:ring-2 transition-shadow`;
   const inputStyle = {
-    borderColor: cardBorder,
+    borderColor: 'var(--border)',
     '--tw-ring-color': '#00A2B6',
-    backgroundColor: cardBg,
-    color: textPrimary,
+    backgroundColor: 'var(--card)',
+    color: 'var(--foreground)',
   } as React.CSSProperties;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'var(--ace-font)' }}>
       {/* Hero */}
       <div style={{ background: 'linear-gradient(135deg,#050D1A 0%,#0A1628 100%)' }} className="pt-24 sm:pt-28 pb-16 px-4">
         <div className="max-w-7xl mx-auto">
@@ -126,15 +119,14 @@ export default function HostACoursePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="text-center mb-10">
           <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#00A2B6' }}>Why Partner With Us</p>
-          <h2 style={{ fontSize: 'clamp(1.4rem,3vw,2rem)', fontWeight: 800, color: textPrimary }}>Everything you need to succeed as an instructor</h2>
+          <h2 style={{ fontSize: 'clamp(1.4rem,3vw,2rem)', fontWeight: 800 }} className="text-foreground">Everything you need to succeed as an instructor</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {BENEFITS.map(({ icon: Icon, title, desc }) => (
             <div
               key={title}
-              className="rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
-              style={{ backgroundColor: cardBg, border: `1px solid ${cardBorder}` }}
+              className="rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow bg-card border border-border"
             >
               <div
                 className="h-11 w-11 rounded-xl flex items-center justify-center mb-4"
@@ -142,8 +134,8 @@ export default function HostACoursePage() {
               >
                 <Icon className="h-5 w-5" style={{ color: '#00A2B6' }} />
               </div>
-              <h3 className="mb-2" style={{ fontSize: '0.95rem', fontWeight: 700, color: textPrimary }}>{title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: textMuted }}>{desc}</p>
+              <h3 className="mb-2 text-foreground" style={{ fontSize: '0.95rem', fontWeight: 700 }}>{title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
             </div>
           ))}
         </div>
@@ -185,8 +177,7 @@ export default function HostACoursePage() {
             {TESTIMONIALS.map(({ name, role, quote, rating }) => (
               <div
                 key={name}
-                className="bg-white rounded-2xl p-6 shadow-sm"
-                style={{ border: '1px solid #e5e7eb' }}
+                className="bg-card border border-border rounded-2xl p-6 shadow-sm"
               >
                 <div className="flex gap-0.5 mb-4">
                   {[...Array(rating)].map((_, i) => (
@@ -217,7 +208,7 @@ export default function HostACoursePage() {
               <p className="text-white/50 text-sm">Our team will review your application within 5 business days.</p>
             </div>
 
-            <div className="bg-white px-8 py-8">
+            <div className="bg-card px-8 py-8">
               {submitted ? (
                 <div className="text-center py-10">
                   <div

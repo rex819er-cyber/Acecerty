@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Ticket, ShieldCheck, Zap, Star, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useTheme } from '../context/ThemeContext';
 
 type Vendor = 'All' | 'CompTIA' | 'Microsoft' | 'Cisco' | 'ISC2' | 'ISACA' | 'AWS' | 'PMI';
 
@@ -50,14 +49,6 @@ const VENDOR_LOGO: Record<string, string> = {
 
 function VoucherCard({ voucher }: { voucher: Voucher }) {
   const { addToCart } = useCart();
-  const { isDark } = useTheme();
-  const savings = voucher.originalPrice - voucher.price;
-  const pctOff = Math.round((savings / voucher.originalPrice) * 100);
-
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
 
   const courseForCart = {
     id: voucher.id,
@@ -65,8 +56,8 @@ function VoucherCard({ voucher }: { voucher: Voucher }) {
     shortTitle: voucher.examCode,
     description: `Official ${voucher.vendor} exam voucher for ${voucher.exam} (${voucher.examCode})`,
     category: voucher.vendor as any,
-    price: voucher.price,
-    originalPrice: voucher.originalPrice,
+    price: 60000,
+    originalPrice: 60000,
     duration: 'Voucher',
     level: 'All Levels' as any,
     type: 'online' as any,
@@ -77,15 +68,13 @@ function VoucherCard({ voucher }: { voucher: Voucher }) {
 
   return (
     <article
-      className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-      style={{ backgroundColor: cardBg, border: `1px solid ${cardBorder}` }}
+      className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col bg-card border border-border"
+      style={{ fontFamily: 'var(--ace-font)' }}
     >
-      {/* Header bar */}
       <div className="h-2 w-full" style={{ backgroundColor: voucher.color }} />
 
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-start justify-between mb-3">
-          {/* Vendor logo chip */}
           <div
             className="h-10 w-14 rounded-lg flex items-center justify-center text-white text-xs font-black"
             style={{ backgroundColor: voucher.color }}
@@ -95,18 +84,12 @@ function VoucherCard({ voucher }: { voucher: Voucher }) {
 
           <div className="flex flex-col items-end gap-1">
             {voucher.badge && (
-              <span
-                className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white"
-                style={{ backgroundColor: '#F97316' }}
-              >
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white" style={{ backgroundColor: '#F97316' }}>
                 {voucher.badge}
               </span>
             )}
-            <span
-              className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold"
-              style={{ backgroundColor: '#dcfce7', color: '#16a34a' }}
-            >
-              Save {pctOff}%
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold" style={{ backgroundColor: '#dcfce7', color: '#16a34a' }}>
+              Official Price
             </span>
           </div>
         </div>
@@ -114,14 +97,14 @@ function VoucherCard({ voucher }: { voucher: Voucher }) {
         <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: voucher.color }}>
           {voucher.vendor}
         </p>
-        <h3 className="mb-1 leading-snug" style={{ fontSize: '0.9rem', fontWeight: 700, color: textPrimary }}>
+        <h3 className="text-card-foreground mb-1 leading-snug" style={{ fontSize: '0.9rem', fontWeight: 700 }}>
           {voucher.exam}
         </h3>
-        <p className="text-xs mb-4" style={{ color: textMuted }}>Exam code: {voucher.examCode}</p>
+        <p className="text-xs mb-4 text-muted-foreground">Exam code: {voucher.examCode}</p>
 
         <div className="mt-auto">
           <div className="flex items-baseline gap-2 mb-4">
-            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#00A2B6' }}>
+            <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--ace-brand)' }}>
               ₦60,000
             </span>
           </div>
@@ -129,7 +112,7 @@ function VoucherCard({ voucher }: { voucher: Voucher }) {
           <button
             onClick={() => addToCart(courseForCart)}
             className="w-full py-3 rounded-xl text-sm font-semibold text-white flex items-center justify-center gap-2 transition-all active:scale-[0.97] hover:opacity-90"
-            style={{ backgroundColor: '#00A2B6' }}
+            style={{ backgroundColor: 'var(--ace-brand)' }}
           >
             <Ticket className="h-4 w-4" /> Buy Voucher
           </button>
@@ -142,15 +125,6 @@ function VoucherCard({ voucher }: { voucher: Voucher }) {
 export default function ExamVouchersPage() {
   const [activeVendor, setActiveVendor] = useState<Vendor>('All');
   const [query, setQuery] = useState('');
-  const { isDark } = useTheme();
-
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
-  const filterBg = isDark ? '#111111' : '#FFFFFF';
-  const filterBorder = isDark ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
 
   const filtered = VOUCHERS.filter((v) => {
     const matchVendor = activeVendor === 'All' || v.vendor === activeVendor;
@@ -159,13 +133,13 @@ export default function ExamVouchersPage() {
   });
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'var(--ace-font)' }}>
       {/* Hero */}
       <div style={{ background: 'linear-gradient(135deg,#050D1A 0%,#0A1628 100%)' }} className="pt-24 sm:pt-28 pb-14 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2 mb-4">
-            <Ticket className="h-5 w-5" style={{ color: '#00A2B6' }} />
-            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#00A2B6' }}>Exam Vouchers</p>
+            <Ticket className="h-5 w-5" style={{ color: 'var(--ace-brand)' }} />
+            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ace-brand)' }}>Exam Vouchers</p>
           </div>
           <h1 className="text-white mb-3 leading-tight" style={{ fontSize: 'clamp(1.8rem,4vw,3rem)', fontWeight: 800 }}>
             Discounted Exam Vouchers
@@ -182,7 +156,7 @@ export default function ExamVouchersPage() {
               { icon: Star, text: 'Best Price Guarantee' },
             ].map(({ icon: Icon, text }) => (
               <div key={text} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15">
-                <Icon className="h-4 w-4" style={{ color: '#00A2B6' }} />
+                <Icon className="h-4 w-4" style={{ color: 'var(--ace-brand)' }} />
                 <span className="text-white/80 text-sm font-medium">{text}</span>
               </div>
             ))}
@@ -190,14 +164,14 @@ export default function ExamVouchersPage() {
 
           {/* Search */}
           <div className="relative max-w-lg">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search vouchers by exam or vendor…"
-              className="w-full pl-12 pr-4 py-4 rounded-2xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 shadow-lg"
-              style={{ '--tw-ring-color': '#00A2B6' } as React.CSSProperties}
+              className="w-full pl-12 pr-4 py-4 rounded-2xl text-sm bg-white/10 text-white placeholder-white/40 border border-white/15 focus:outline-none focus:ring-2 shadow-lg"
+              style={{ '--tw-ring-color': 'var(--ace-brand)' } as React.CSSProperties}
             />
           </div>
         </div>
@@ -212,21 +186,21 @@ export default function ExamVouchersPage() {
               onClick={() => setActiveVendor(v)}
               className="px-4 py-2 rounded-full text-sm font-semibold transition-all"
               style={{
-                backgroundColor: activeVendor === v ? '#00A2B6' : filterBg,
-                color: activeVendor === v ? '#fff' : textMuted,
-                border: `1px solid ${activeVendor === v ? '#00A2B6' : filterBorder}`,
+                backgroundColor: activeVendor === v ? 'var(--ace-brand)' : 'var(--card)',
+                color: activeVendor === v ? '#fff' : 'var(--muted-foreground)',
+                border: `1px solid ${activeVendor === v ? 'var(--ace-brand)' : 'var(--border)'}`,
               }}
             >
               {v}
             </button>
           ))}
-          <span className="ml-auto self-center text-sm" style={{ color: textMuted }}>{filtered.length} vouchers</span>
+          <span className="ml-auto self-center text-sm text-muted-foreground">{filtered.length} vouchers</span>
         </div>
 
         {filtered.length === 0 ? (
           <div className="text-center py-24">
-            <Ticket className="h-12 w-12 mx-auto mb-4" style={{ color: isDark ? 'rgba(255,255,255,0.15)' : '#e5e7eb' }} />
-            <p className="font-medium" style={{ color: textMuted }}>No vouchers found</p>
+            <Ticket className="h-12 w-12 mx-auto mb-4 text-border" />
+            <p className="font-medium text-muted-foreground">No vouchers found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">

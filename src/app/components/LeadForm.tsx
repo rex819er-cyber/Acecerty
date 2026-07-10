@@ -1,37 +1,28 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 const REQUEST_TYPES = ['Individual Training', 'Team Training', 'Enterprise Solutions', 'Request Quote', 'Other'];
 
 export function LeadForm() {
   const [submitted, setSubmitted] = useState(false);
-  const { isDark } = useTheme();
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', company: '', requestType: '', message: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
 
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.10)';
-  const labelColor = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
-  const inputBg = isDark ? '#141414' : '#FFFFFF';
-  const inputBorder = isDark ? 'rgba(255,255,255,0.10)' : '#e5e7eb';
-  const inputText = isDark ? '#FFFFFF' : '#111827';
-
   const inputCls = 'w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-2 transition-all';
-  const inputStyle = { backgroundColor: inputBg, border: `1px solid ${inputBorder}`, color: inputText, '--tw-ring-color': '#00A2B6' } as React.CSSProperties;
+  const inputStyle = { backgroundColor: 'var(--input-background)', border: '1px solid var(--border)', color: 'var(--foreground)', '--tw-ring-color': '#00A2B6' } as React.CSSProperties;
 
   return (
     <section
-      className="py-20 lg:py-28 relative overflow-hidden"
-      style={{ background: isDark ? 'linear-gradient(135deg, #050505 0%, #111118 60%, #050505 100%)' : 'linear-gradient(135deg, #EEF9FB 0%, #F0FDFF 60%, #EEF9FB 100%)', fontFamily: 'Inter, sans-serif' }}
+      className="py-20 lg:py-28 relative overflow-hidden bg-background"
+      style={{ fontFamily: 'var(--ace-font)' }}
     >
       {/* Dot pattern */}
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"
-        style={{ backgroundImage: `radial-gradient(circle at 2px 2px, ${isDark ? 'white' : 'black'} 1px, transparent 0)`, backgroundSize: '40px 40px' }}
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, var(--foreground) 1px, transparent 0)', backgroundSize: '40px 40px' }}
       />
       {/* Cyan glow */}
       <div
@@ -45,12 +36,12 @@ export function LeadForm() {
           <div>
             <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: '#00A2B6' }}>Get In Touch</p>
             <h2
-              className="mb-6 leading-tight"
-              style={{ fontSize: 'clamp(1.75rem, 3vw, 2.75rem)', fontWeight: 800, color: isDark ? '#FFFFFF' : '#111111' }}
+              className="mb-6 leading-tight text-foreground"
+              style={{ fontSize: 'clamp(1.75rem, 3vw, 2.75rem)', fontWeight: 800 }}
             >
               The accelerated learning company for busy IT professionals looking to upskill, fast.
             </h2>
-            <p className="mb-10 leading-relaxed" style={{ fontSize: '1.05rem', color: isDark ? 'rgba(255,255,255,0.50)' : 'rgba(0,0,0,0.50)' }}>
+            <p className="mb-10 leading-relaxed text-muted-foreground" style={{ fontSize: '1.05rem' }}>
               Whether you're an individual looking to level up or an enterprise building a security-ready team, our training advisors are ready to help you find the right path.
             </p>
             <div className="grid grid-cols-3 gap-6">
@@ -61,51 +52,51 @@ export function LeadForm() {
           </div>
 
           {/* Right: form */}
-          <div className="rounded-3xl p-8 lg:p-10 shadow-2xl" style={{ backgroundColor: cardBg, border: `1px solid ${cardBorder}` }}>
+          <div className="rounded-3xl p-8 lg:p-10 shadow-2xl bg-card border border-border">
             {submitted ? (
               <div className="flex flex-col items-center justify-center text-center py-10">
                 <div className="h-16 w-16 rounded-full flex items-center justify-center mb-5" style={{ backgroundColor: 'rgba(0,162,182,0.12)' }}>
                   <CheckCircle className="h-8 w-8" style={{ color: '#00A2B6' }} />
                 </div>
-                <h3 className="mb-3" style={{ fontSize: '1.5rem', fontWeight: 700, color: isDark ? '#FFFFFF' : '#111827' }}>Request Received</h3>
-                <p style={{ color: labelColor }}>A training advisor will contact you shortly to discuss your goals.</p>
+                <h3 className="mb-3 text-foreground" style={{ fontSize: '1.5rem', fontWeight: 700 }}>Request Received</h3>
+                <p className="text-muted-foreground">A training advisor will contact you shortly to discuss your goals.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <h3 className="mb-2" style={{ fontSize: '1.25rem', fontWeight: 700, color: isDark ? '#FFFFFF' : '#111827' }}>Talk to a training advisor</h3>
+                <h3 className="mb-2 text-foreground" style={{ fontSize: '1.25rem', fontWeight: 700 }}>Talk to a training advisor</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: labelColor }}>First Name</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">First Name</label>
                     <input name="firstName" value={form.firstName} onChange={handleChange} required placeholder="Jane" className={inputCls} style={inputStyle} />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: labelColor }}>Last Name</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Last Name</label>
                     <input name="lastName" value={form.lastName} onChange={handleChange} required placeholder="Smith" className={inputCls} style={inputStyle} />
                   </div>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: labelColor }}>Email</label>
+                  <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email</label>
                   <input type="email" name="email" value={form.email} onChange={handleChange} required placeholder="jane@company.com" className={inputCls} style={inputStyle} />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: labelColor }}>Phone</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Phone</label>
                     <input type="tel" name="phone" value={form.phone} onChange={handleChange} placeholder="+1 (555) 000-0000" className={inputCls} style={inputStyle} />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: labelColor }}>Company</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Company</label>
                     <input name="company" value={form.company} onChange={handleChange} placeholder="Acme Corp" className={inputCls} style={inputStyle} />
                   </div>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: labelColor }}>Type of Request</label>
+                  <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Type of Request</label>
                   <select name="requestType" value={form.requestType} onChange={handleChange} className={inputCls} style={{ ...inputStyle }}>
                     <option value="">Select a type…</option>
                     {REQUEST_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-semibold uppercase tracking-wider" style={{ color: labelColor }}>Message</label>
+                  <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Message</label>
                   <textarea name="message" value={form.message} onChange={handleChange} rows={3} placeholder="Tell us about your training goals…" className={inputCls} style={{ ...inputStyle, resize: 'none' }} />
                 </div>
                 <button

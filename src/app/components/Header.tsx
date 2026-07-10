@@ -15,13 +15,11 @@ const NAV = [
   { label: 'Host a Course', href: '/host-a-course' },
 ];
 
-function NavLink({ label, href, isActive, isDark }: {
-  label: string; href: string; isActive: boolean; isDark: boolean;
+function NavLink({ label, href, isActive }: {
+  label: string; href: string; isActive: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
-  const textColor = isDark
-    ? isActive ? '#00A2B6' : hovered ? '#00A2B6' : 'rgba(255,255,255,0.85)'
-    : isActive ? '#00A2B6' : hovered ? '#00A2B6' : '#374151';
+  const textColor = (isActive || hovered) ? '#00A2B6' : 'var(--foreground)';
   return (
     <Link
       to={href}
@@ -42,8 +40,8 @@ function NavLink({ label, href, isActive, isDark }: {
   );
 }
 
-function HamburgerIcon({ open, isDark }: { open: boolean; isDark: boolean }) {
-  const color = isDark ? '#fff' : '#111';
+function HamburgerIcon({ open }: { open: boolean }) {
+  const color = 'var(--foreground)';
   return (
     <div className="relative w-5 h-4 flex flex-col justify-between" style={{ color }}>
       <motion.span className="absolute h-0.5 rounded-full bg-current" style={{ width: '100%', top: 0 }}
@@ -64,12 +62,8 @@ function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative w-9 h-9 flex items-center justify-center rounded-full overflow-hidden transition-colors"
-      style={{
-        backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
-        border: `1px solid ${isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'}`,
-        color: isDark ? '#FFFFFF' : '#374151',
-      }}
+      className="relative w-9 h-9 flex items-center justify-center rounded-full overflow-hidden transition-colors bg-muted border border-border text-foreground"
+      style={{}}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       <AnimatePresence mode="wait" initial={false}>
@@ -117,8 +111,7 @@ export function Header() {
   const pillBg = isDark
     ? scrolled ? 'rgba(12,12,18,0.97)' : 'rgba(14,14,22,0.88)'
     : scrolled ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.96)';
-  const pillBorder = isDark ? 'rgba(255,255,255,0.09)' : 'rgba(0,0,0,0.10)';
-  const outerBg = isDark ? 'rgba(5,5,5,0.0)' : 'rgba(255,255,255,0.0)';
+  const pillBorder = 'var(--border)';
 
   return (
     <div
@@ -148,12 +141,12 @@ export function Header() {
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
               minHeight: 64,
-              fontFamily: 'Inter, sans-serif',
+              fontFamily: 'var(--ace-font)',
             }}
           >
             {/* Logo — SVG with theme-adaptive text color */}
             <Link to="/" className="flex-shrink-0 flex items-center mr-2">
-              <AcecertyLogo isDark={isDark} height={28} />
+              <AcecertyLogo height={28} />
             </Link>
 
             {/* Desktop nav */}
@@ -164,7 +157,6 @@ export function Header() {
                   label={item.label}
                   href={item.href}
                   isActive={location.pathname === item.href}
-                  isDark={isDark}
                 />
               ))}
             </nav>
@@ -186,23 +178,21 @@ export function Header() {
                       placeholder="Search courses…"
                       className="w-full h-9 pl-3 pr-8 rounded-full text-sm outline-none"
                       style={{
-                        backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
-                        border: `1.5px solid #00A2B6`,
-                        color: isDark ? '#fff' : '#111',
+                        backgroundColor: 'var(--muted)',
+                        border: '1.5px solid #00A2B6',
+                        color: 'var(--foreground)',
                       }}
                       onKeyDown={(e) => e.key === 'Escape' && (setSearchOpen(false), setSearchQuery(''))}
                     />
                     <button onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2"
-                      style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}>
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground">
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </motion.div>
                 ) : (
                   <motion.button key="search-closed" onClick={() => setSearchOpen(true)}
                     whileHover={{ scale: 1.05, color: '#00A2B6' }} whileTap={{ scale: 0.93 }}
-                    className="w-9 h-9 flex items-center justify-center rounded-full"
-                    style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}
+                    className="w-9 h-9 flex items-center justify-center rounded-full text-muted-foreground"
                     aria-label="Search">
                     <Search className="h-4 w-4" />
                   </motion.button>
@@ -211,8 +201,7 @@ export function Header() {
 
               <motion.button onClick={openCart}
                 whileHover={{ scale: 1.05, color: '#00A2B6' }} whileTap={{ scale: 0.93 }}
-                className="relative w-9 h-9 flex items-center justify-center rounded-full"
-                style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }}
+                className="relative w-9 h-9 flex items-center justify-center rounded-full text-muted-foreground"
                 aria-label="Open cart">
                 <ShoppingCart className="h-4 w-4" />
                 <AnimatePresence>
@@ -247,8 +236,7 @@ export function Header() {
             <div className="lg:hidden flex items-center gap-1 ml-auto">
               <ThemeToggle />
               <motion.button onClick={openCart} whileTap={{ scale: 0.9 }}
-                className="relative w-9 h-9 flex items-center justify-center rounded-full"
-                style={{ color: isDark ? '#fff' : '#374151' }}>
+                className="relative w-9 h-9 flex items-center justify-center rounded-full text-foreground">
                 <ShoppingCart className="h-4 w-4" />
                 <AnimatePresence>
                   {itemCount > 0 && (
@@ -261,11 +249,10 @@ export function Header() {
                 </AnimatePresence>
               </motion.button>
               <motion.button whileTap={{ scale: 0.9 }}
-                className="w-9 h-9 flex items-center justify-center rounded-full"
-                style={{ color: isDark ? '#fff' : '#374151' }}
+                className="w-9 h-9 flex items-center justify-center rounded-full text-foreground"
                 onClick={() => setMobileOpen(!mobileOpen)}
                 aria-label="Toggle menu">
-                <HamburgerIcon open={mobileOpen} isDark={isDark} />
+                <HamburgerIcon open={mobileOpen} />
               </motion.button>
             </div>
           </motion.div>
@@ -279,10 +266,10 @@ export function Header() {
                 transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                 className="mt-2 rounded-3xl overflow-hidden"
                 style={{
-                  background: isDark ? 'rgba(12,12,18,0.97)' : 'rgba(255,255,255,0.98)',
+                  background: 'var(--background)',
                   border: `0.5px solid ${pillBorder}`,
                   backdropFilter: 'blur(24px)',
-                  boxShadow: isDark ? '0 8px 40px rgba(0,0,0,0.5)' : '0 8px 40px rgba(0,0,0,0.12)',
+                  boxShadow: '0 8px 40px rgba(0,0,0,0.25)',
                 }}>
                 <div className="px-4 py-4 flex flex-col gap-0.5">
                   {NAV.map((item, i) => (
@@ -292,7 +279,7 @@ export function Header() {
                       <Link to={item.href}
                         className="block py-3 px-3 rounded-xl text-sm font-medium transition-all"
                         style={{
-                          color: location.pathname === item.href ? '#00A2B6' : isDark ? 'rgba(255,255,255,0.85)' : '#374151',
+                          color: location.pathname === item.href ? '#00A2B6' : 'var(--foreground)',
                           backgroundColor: location.pathname === item.href ? 'rgba(0,162,182,0.10)' : 'transparent',
                         }}>
                         {item.label}

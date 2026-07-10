@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BookOpen, Users, Monitor, Award, Clock, CheckCircle, Search, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router';
-import { useTheme } from '../context/ThemeContext';
 
 type Format = 'All' | 'Bootcamp' | 'Live Online' | 'Self-Paced';
 type Level = 'All' | 'Beginner' | 'Intermediate' | 'Advanced';
@@ -94,19 +93,12 @@ const LEVEL_STYLE: Record<string, { bg: string; text: string }> = {
 };
 
 function TrainingCard({ training }: { training: Training }) {
-  const { isDark } = useTheme();
   const FormatIcon = FORMAT_ICON[training.format];
   const lvl = LEVEL_STYLE[training.level];
 
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
-
   return (
     <article
-      className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-      style={{ backgroundColor: cardBg, border: `1px solid ${cardBorder}` }}
+      className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col bg-card border border-border"
     >
       <div className="h-2 w-full" style={{ backgroundColor: training.color }} />
 
@@ -136,12 +128,12 @@ function TrainingCard({ training }: { training: Training }) {
         <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: training.color }}>
           {training.vendor}
         </p>
-        <h3 className="mb-3 leading-snug" style={{ fontSize: '0.9rem', fontWeight: 700, color: textPrimary }}>
+        <h3 className="mb-3 leading-snug text-foreground" style={{ fontSize: '0.9rem', fontWeight: 700 }}>
           {training.title}
         </h3>
 
         <div className="flex items-center gap-3 mb-4">
-          <div className="flex items-center gap-1.5 text-xs" style={{ color: textMuted }}>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Clock className="h-3.5 w-3.5" />
             {training.duration}
           </div>
@@ -155,7 +147,7 @@ function TrainingCard({ training }: { training: Training }) {
 
         <ul className="space-y-1.5 mb-4">
           {training.includes.map((item) => (
-            <li key={item} className="flex items-center gap-2 text-xs" style={{ color: textMuted }}>
+            <li key={item} className="flex items-center gap-2 text-xs text-muted-foreground">
               <CheckCircle className="h-3.5 w-3.5 flex-shrink-0" style={{ color: '#16a34a' }} />
               {item}
             </li>
@@ -185,12 +177,7 @@ export default function TrainingPage() {
   const [activeFormat, setActiveFormat] = useState<Format>('All');
   const [activeLevel, setActiveLevel] = useState<Level>('All');
   const [query, setQuery] = useState('');
-  const { isDark } = useTheme();
 
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
-  const filterBg = isDark ? '#111111' : '#FFFFFF';
-  const filterBorder = isDark ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
 
   const filtered = TRAININGS.filter((t) => {
     const matchFormat = activeFormat === 'All' || t.format === activeFormat;
@@ -200,7 +187,7 @@ export default function TrainingPage() {
   });
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* Hero */}
       <div style={{ background: 'linear-gradient(135deg,#050D1A 0%,#0A1628 100%)' }} className="pt-24 sm:pt-28 pb-14 px-4">
         <div className="max-w-7xl mx-auto">
@@ -251,16 +238,16 @@ export default function TrainingPage() {
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-8">
           <div className="flex flex-wrap gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider self-center mr-1" style={{ color: textMuted }}>Format</span>
+            <span className="text-xs font-bold uppercase tracking-wider self-center mr-1 text-muted-foreground">Format</span>
             {FORMATS.map((f) => (
               <button
                 key={f}
                 onClick={() => setActiveFormat(f)}
                 className="px-4 py-2 rounded-full text-sm font-semibold transition-all"
                 style={{
-                  backgroundColor: activeFormat === f ? '#00A2B6' : filterBg,
-                  color: activeFormat === f ? '#fff' : textMuted,
-                  border: `1px solid ${activeFormat === f ? '#00A2B6' : filterBorder}`,
+                  backgroundColor: activeFormat === f ? '#00A2B6' : 'var(--card)',
+                  color: activeFormat === f ? '#fff' : 'var(--muted-foreground)',
+                  border: `1px solid ${activeFormat === f ? '#00A2B6' : 'var(--border)'}`,
                 }}
               >
                 {f}
@@ -268,29 +255,29 @@ export default function TrainingPage() {
             ))}
           </div>
           <div className="flex flex-wrap gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider self-center mr-1" style={{ color: textMuted }}>Level</span>
+            <span className="text-xs font-bold uppercase tracking-wider self-center mr-1 text-muted-foreground">Level</span>
             {LEVELS.map((l) => (
               <button
                 key={l}
                 onClick={() => setActiveLevel(l)}
                 className="px-4 py-2 rounded-full text-sm font-semibold transition-all"
                 style={{
-                  backgroundColor: activeLevel === l ? '#00A2B6' : filterBg,
-                  color: activeLevel === l ? '#fff' : textMuted,
-                  border: `1px solid ${activeLevel === l ? '#00A2B6' : filterBorder}`,
+                  backgroundColor: activeLevel === l ? '#00A2B6' : 'var(--card)',
+                  color: activeLevel === l ? '#fff' : 'var(--muted-foreground)',
+                  border: `1px solid ${activeLevel === l ? '#00A2B6' : 'var(--border)'}`,
                 }}
               >
                 {l}
               </button>
             ))}
           </div>
-          <span className="ml-auto self-center text-sm" style={{ color: textMuted }}>{filtered.length} courses</span>
+          <span className="ml-auto self-center text-sm text-muted-foreground">{filtered.length} courses</span>
         </div>
 
         {filtered.length === 0 ? (
           <div className="text-center py-24">
-            <BookOpen className="h-12 w-12 mx-auto mb-4" style={{ color: isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb' }} />
-            <p className="font-medium" style={{ color: textMuted }}>No courses found</p>
+            <BookOpen className="h-12 w-12 mx-auto mb-4 text-border" />
+            <p className="font-medium text-muted-foreground">No courses found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

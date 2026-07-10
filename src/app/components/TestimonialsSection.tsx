@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 const REVIEWS = [
   { id: 0, name: 'Toby Grace', role: 'Veteran', initials: 'TG', cert: 'CISSP', text: "If it wasn't for Acecerty I would not have gotten my CISSP. I loved their program! Acecerty was exactly what I needed. It was so intimidating at first but they got me across the finish line after a 1-week boot camp with the test at the end." },
@@ -20,26 +19,20 @@ const MEDIA = ['CNN', 'MSNBC', 'REUTERS', 'NY TIMES', 'FOX NEWS'];
 
 export function TestimonialsSection() {
   const [active, setActive] = useState(0);
-  const { isDark } = useTheme();
   const prev = () => setActive((a) => (a - 1 + REVIEWS.length) % REVIEWS.length);
   const next = () => setActive((a) => (a + 1) % REVIEWS.length);
   const review = REVIEWS[active];
 
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111827';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
 
   return (
-    <section className="py-20 lg:py-28" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+    <section className="py-20 lg:py-28 bg-background" style={{ fontFamily: 'var(--ace-font)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#00A2B6' }}>Student Success</p>
-          <h2 className="mb-4" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', fontWeight: 800, color: textPrimary }}>
+          <h2 className="mb-4 text-foreground" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', fontWeight: 800 }}>
             Learn from Those Who've Excelled
           </h2>
-          <p className="max-w-xl mx-auto" style={{ fontSize: '1.05rem', color: textMuted }}>
+          <p className="max-w-xl mx-auto text-muted-foreground" style={{ fontSize: '1.05rem' }}>
             Join thousands of professionals who chose Acecerty for exam-day-ready certification training.
           </p>
         </div>
@@ -84,12 +77,12 @@ export function TestimonialsSection() {
           {/* Review list */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold" style={{ color: textMuted }}>Featured Reviews</span>
+              <span className="text-sm font-semibold text-muted-foreground">Featured Reviews</span>
               <div className="flex gap-2">
-                <button onClick={prev} className="h-9 w-9 rounded-full flex items-center justify-center transition-all" style={{ border: `1px solid ${cardBorder}`, backgroundColor: cardBg, color: textPrimary }}>
+                <button onClick={prev} className="h-9 w-9 rounded-full flex items-center justify-center transition-all bg-card border border-border text-foreground">
                   <ChevronLeft className="h-4 w-4" />
                 </button>
-                <button onClick={next} className="h-9 w-9 rounded-full flex items-center justify-center transition-all" style={{ border: `1px solid ${cardBorder}`, backgroundColor: cardBg, color: textPrimary }}>
+                <button onClick={next} className="h-9 w-9 rounded-full flex items-center justify-center transition-all bg-card border border-border text-foreground">
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
@@ -100,21 +93,21 @@ export function TestimonialsSection() {
                 onClick={() => setActive(i)}
                 className="text-left p-5 rounded-2xl transition-all duration-200"
                 style={{
-                  backgroundColor: active === i ? (isDark ? '#0E0E0E' : '#FFFFFF') : 'transparent',
-                  border: active === i ? '2px solid #00A2B6' : `2px solid ${cardBorder}`,
+                  backgroundColor: active === i ? 'var(--card)' : 'transparent',
+                  border: active === i ? '2px solid #00A2B6' : '2px solid var(--border)',
                   boxShadow: active === i ? '0 4px 20px rgba(0,162,182,0.15)' : 'none',
                 }}
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="h-9 w-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ backgroundColor: active === i ? '#00A2B6' : (isDark ? '#141414' : '#e5e7eb') }}>
-                    <span style={{ color: active === i ? '#fff' : textMuted }}>{r.initials}</span>
+                  <div className="h-9 w-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ backgroundColor: active === i ? '#00A2B6' : 'var(--muted)' }}>
+                    <span style={{ color: active === i ? '#fff' : 'var(--muted-foreground)' }}>{r.initials}</span>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold" style={{ color: textPrimary }}>{r.name}</p>
-                    <p className="text-xs" style={{ color: textMuted }}>{r.role}</p>
+                    <p className="text-sm font-semibold text-foreground">{r.name}</p>
+                    <p className="text-xs text-muted-foreground">{r.role}</p>
                   </div>
                 </div>
-                <p className="text-xs leading-relaxed line-clamp-2" style={{ color: textMuted }}>{r.text}</p>
+                <p className="text-xs leading-relaxed line-clamp-2 text-muted-foreground">{r.text}</p>
               </button>
             ))}
           </div>

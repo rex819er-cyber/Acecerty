@@ -12,7 +12,7 @@ interface AcecertyLogoProps {
  * Wordmark text is black in light mode, white in dark mode.
  */
 export function AcecertyLogo({ isDark = false, height = 30, className }: AcecertyLogoProps) {
-  const textFill = isDark ? '#FFFFFF' : '#000000';
+  const textFill = isDark ? '#FFFFFF' : 'var(--foreground)';
   const aspectRatio = 118 / 32;
   const width = height * aspectRatio;
 

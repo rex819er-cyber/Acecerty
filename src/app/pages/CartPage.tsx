@@ -16,35 +16,28 @@ export default function CartPage() {
     if (promo.trim().toUpperCase() === 'ACECERTY10') setPromoApplied(true);
   };
 
-
   return (
-    <div
-      className="min-h-screen pt-24"
-      style={{ backgroundColor: '#F8FAFC', fontFamily: 'Inter, sans-serif' }}
-    >
+    <div className="min-h-screen pt-24 bg-background" style={{ fontFamily: 'var(--ace-font)' }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1
-          className="text-gray-900 mb-2"
-          style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', fontWeight: 800 }}
-        >
+        <h1 className="text-foreground mb-2" style={{ fontSize: 'clamp(1.75rem,3vw,2.5rem)', fontWeight: 800 }}>
           Your Cart
         </h1>
-        <p className="text-gray-400 mb-10">
+        <p className="text-muted-foreground mb-10">
           {items.length === 0
             ? 'Your cart is empty.'
-            : `${items.length} course${items.length > 1 ? 's' : ''} ready to enroll`}
+            : `${items.length} course${items.length > 1 ? 's' : ''} ready to enrol`}
         </p>
 
         {items.length === 0 ? (
           <div className="text-center py-20">
-            <div className="h-20 w-20 rounded-full bg-white flex items-center justify-center mx-auto mb-5 shadow-sm">
-              <ShoppingBag className="h-9 w-9 text-gray-300" />
+            <div className="h-20 w-20 rounded-full bg-card flex items-center justify-center mx-auto mb-5 border border-border">
+              <ShoppingBag className="h-9 w-9 text-muted-foreground" />
             </div>
-            <p className="text-gray-500 mb-6">Add courses to get started.</p>
+            <p className="text-muted-foreground mb-6">Add courses to get started.</p>
             <Link
               to="/courses"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-white shadow-lg"
-              style={{ backgroundColor: '#00A2B6' }}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-white"
+              style={{ backgroundColor: 'var(--ace-brand)' }}
             >
               Browse Courses <ArrowRight className="h-5 w-5" />
             </Link>
@@ -56,67 +49,55 @@ export default function CartPage() {
               {items.map(({ course, quantity }) => (
                 <div
                   key={course.id}
-                  className="bg-white rounded-2xl p-5 flex gap-5 shadow-sm"
-                  style={{ border: '1px solid #e5e7eb' }}
+                  className="bg-card rounded-2xl p-5 flex gap-5 border border-border"
                 >
-                  {/* Thumbnail */}
                   <div
                     className="h-20 w-20 rounded-xl flex-shrink-0 overflow-hidden flex items-center justify-center"
                     style={{ background: course.gradient || '#0B1D3A' }}
                   >
                     {course.image ? (
-                      <ImageWithFallback
-                        src={course.image}
-                        alt={course.title}
-                        className="h-full w-full object-cover"
-                      />
+                      <ImageWithFallback src={course.image} alt={course.title} className="h-full w-full object-cover" />
                     ) : (
-                      <span className="text-white font-black text-sm text-center px-1">
-                        {course.shortTitle}
-                      </span>
+                      <span className="text-white font-black text-sm text-center px-1">{course.shortTitle}</span>
                     )}
                   </div>
 
-                  {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#00A2B6' }}>
+                        <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--ace-brand)' }}>
                           {course.category}
                         </p>
-                        <h3 className="text-gray-900 font-semibold text-sm leading-snug">
-                          {course.title}
-                        </h3>
-                        <p className="text-gray-400 text-xs mt-1">
+                        <h3 className="text-foreground font-semibold text-sm leading-snug">{course.title}</h3>
+                        <p className="text-muted-foreground text-xs mt-1">
                           {course.type === 'bootcamp' ? 'Live Bootcamp' : 'Online Self-Paced'} · {course.duration}
                         </p>
                       </div>
                       <button
                         onClick={() => removeFromCart(course.id)}
-                        className="flex-shrink-0 h-8 w-8 rounded-lg flex items-center justify-center text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors"
+                        className="flex-shrink-0 h-8 w-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
 
                     <div className="flex items-center justify-between mt-4">
-                      {/* Qty */}
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => updateQuantity(course.id, quantity - 1)}
-                          className="h-8 w-8 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                          className="h-8 w-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
                         >
-                          <Minus className="h-3.5 w-3.5 text-gray-500" />
+                          <Minus className="h-3.5 w-3.5 text-muted-foreground" />
                         </button>
-                        <span className="text-sm font-semibold text-gray-700 w-5 text-center">{quantity}</span>
+                        <span className="text-sm font-semibold text-foreground w-5 text-center">{quantity}</span>
                         <button
                           onClick={() => updateQuantity(course.id, quantity + 1)}
-                          className="h-8 w-8 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                          className="h-8 w-8 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
                         >
-                          <Plus className="h-3.5 w-3.5 text-gray-500" />
+                          <Plus className="h-3.5 w-3.5 text-muted-foreground" />
                         </button>
                       </div>
-                      <span className="font-black text-gray-900" style={{ fontSize: '1.1rem' }}>
+                      <span className="font-black text-foreground" style={{ fontSize: '1.1rem' }}>
                         ₦{(course.price * quantity).toLocaleString()}
                       </span>
                     </div>
@@ -127,13 +108,13 @@ export default function CartPage() {
 
             {/* Order summary */}
             <div className="flex flex-col gap-5">
-              {/* Promo code */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm" style={{ border: '1px solid #e5e7eb' }}>
-                <h3 className="text-gray-900 font-semibold mb-4 flex items-center gap-2">
-                  <Tag className="h-4 w-4" style={{ color: '#00A2B6' }} /> Promo Code
+              {/* Promo */}
+              <div className="bg-card rounded-2xl p-6 border border-border">
+                <h3 className="text-foreground font-semibold mb-4 flex items-center gap-2">
+                  <Tag className="h-4 w-4" style={{ color: 'var(--ace-brand)' }} /> Promo Code
                 </h3>
                 {promoApplied ? (
-                  <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
+                  <div className="flex items-center gap-2 text-sm font-medium" style={{ color: '#059669' }}>
                     <CheckCircle className="h-4 w-4" /> 10% discount applied!
                   </div>
                 ) : (
@@ -143,37 +124,39 @@ export default function CartPage() {
                       value={promo}
                       onChange={(e) => setPromo(e.target.value)}
                       placeholder="Enter code"
-                      className="flex-1 px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2"
-                      style={{ '--tw-ring-color': '#00A2B6' } as React.CSSProperties}
+                      className="flex-1 px-3 py-2.5 rounded-xl border border-border bg-input-background text-foreground text-sm focus:outline-none focus:ring-2"
+                      style={{ '--tw-ring-color': 'var(--ace-brand)' } as React.CSSProperties}
                     />
                     <button
                       onClick={applyPromo}
                       className="px-4 py-2.5 rounded-xl text-sm font-semibold text-white"
-                      style={{ backgroundColor: '#0B1D3A' }}
+                      style={{ backgroundColor: 'var(--ace-brand)' }}
                     >
                       Apply
                     </button>
                   </div>
                 )}
-                <p className="text-xs text-gray-400 mt-2">Try <span className="font-semibold text-gray-500">ACECERTY10</span> for 10% off</p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Try <span className="font-semibold text-foreground">ACECERTY10</span> for 10% off
+                </p>
               </div>
 
               {/* Summary */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm" style={{ border: '1px solid #e5e7eb' }}>
-                <h3 className="text-gray-900 font-semibold mb-5">Order Summary</h3>
+              <div className="bg-card rounded-2xl p-6 border border-border">
+                <h3 className="text-foreground font-semibold mb-5">Order Summary</h3>
                 <div className="flex flex-col gap-3 mb-5">
-                  <div className="flex justify-between text-sm text-gray-500">
+                  <div className="flex justify-between text-sm text-muted-foreground">
                     <span>Subtotal</span>
                     <span>₦{subtotal.toLocaleString()}</span>
                   </div>
                   {promoApplied && (
-                    <div className="flex justify-between text-sm text-green-600">
+                    <div className="flex justify-between text-sm" style={{ color: '#059669' }}>
                       <span>Promo (ACECERTY10)</span>
                       <span>-₦{discount.toLocaleString()}</span>
                     </div>
                   )}
-                  <div className="h-px bg-gray-100" />
-                  <div className="flex justify-between text-gray-900">
+                  <div className="h-px bg-border" />
+                  <div className="flex justify-between text-foreground">
                     <span className="font-bold">Total</span>
                     <span className="font-black text-xl">₦{total.toLocaleString()}</span>
                   </div>
@@ -181,27 +164,19 @@ export default function CartPage() {
 
                 <Link
                   to="/checkout"
-                  className="w-full py-4 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98] shadow-lg mb-3 text-center"
-                  style={{ backgroundColor: '#00A2B6' }}
+                  className="w-full py-4 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all hover:opacity-90 active:scale-[0.98] mb-3 text-center"
+                  style={{ backgroundColor: 'var(--ace-brand)', boxShadow: '0 4px 20px var(--ace-brand-glow)' }}
                 >
                   <Lock className="h-4 w-4" /> Proceed to Checkout
                 </Link>
 
-                <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
                   <Lock className="h-3.5 w-3.5" />
                   <span>256-bit SSL encryption</span>
                 </div>
-
-                <p className="text-xs text-gray-400 text-center mt-3 leading-relaxed">
-                  Financing options available at checkout. Free retake guarantee on all bootcamps.
-                </p>
               </div>
 
-              <Link
-                to="/courses"
-                className="text-center text-sm font-medium"
-                style={{ color: '#00A2B6' }}
-              >
+              <Link to="/courses" className="text-center text-sm font-medium" style={{ color: 'var(--ace-brand)' }}>
                 ← Continue Shopping
               </Link>
             </div>

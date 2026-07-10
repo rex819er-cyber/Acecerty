@@ -5,7 +5,6 @@ import {
   XCircle, BarChart2, BookOpen, RotateCcw, Home, AlertCircle,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useTheme } from '../context/ThemeContext';
 
 /* ── Question bank (sample for demo) ───────────────────────────── */
 interface Question {
@@ -136,7 +135,7 @@ function formatTime(s: number) {
 }
 
 /* ── Circular SVG Clock Timer ───────────────────────────────────── */
-function CircularTimer({ timeLeft, totalTime, isDark }: { timeLeft: number; totalTime: number; isDark: boolean }) {
+function CircularTimer({ timeLeft, totalTime }: { timeLeft: number; totalTime: number }) {
   const SIZE = 72;
   const STROKE = 4.5;
   const R = (SIZE - STROKE) / 2;
@@ -146,9 +145,9 @@ function CircularTimer({ timeLeft, totalTime, isDark }: { timeLeft: number; tota
   const urgent = timeLeft < 300;
   const warning = timeLeft < 900;
 
-  const trackColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
-  const arcColor = urgent ? '#ef4444' : warning ? '#f59e0b' : '#00A2B6';
-  const textColor = urgent ? '#ef4444' : warning ? '#f59e0b' : (isDark ? '#fff' : '#111');
+  const trackColor = 'var(--border)';
+  const arcColor = urgent ? '#ef4444' : warning ? '#f59e0b' : 'var(--ace-brand)';
+  const textColor = urgent ? '#ef4444' : warning ? '#f59e0b' : ('var(--foreground)');
 
   const m = Math.floor((timeLeft % 3600) / 60);
   const s = timeLeft % 60;
@@ -174,7 +173,7 @@ function CircularTimer({ timeLeft, totalTime, isDark }: { timeLeft: number; tota
           const y1 = SIZE / 2 + (R - 3) * Math.sin(rad);
           const x2 = SIZE / 2 + (R + 1.5) * Math.cos(rad);
           const y2 = SIZE / 2 + (R + 1.5) * Math.sin(rad);
-          return <line key={angle} x1={x1} y1={y1} x2={x2} y2={y2} stroke={isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)'} strokeWidth={1.5} />;
+          return <line key={angle} x1={x1} y1={y1} x2={x2} y2={y2} stroke={'var(--border)'} strokeWidth={1.5} />;
         })}
       </svg>
       <div className="flex flex-col items-center justify-center" style={{ zIndex: 1 }}>
@@ -195,7 +194,6 @@ type Phase = 'start' | 'exam' | 'review' | 'results';
 
 export default function ExamInterfacePage() {
   const { id = 'cissp' } = useParams<{ id: string }>();
-  const { isDark } = useTheme();
   const navigate = useNavigate();
 
   const questions = getQuestions(id);
@@ -210,11 +208,11 @@ export default function ExamInterfacePage() {
 
   const timeLeft = useTimer(DURATION, timerRunning);
 
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const cardBg = isDark ? '#0d0d0d' : '#fff';
-  const border = isDark ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
-  const textPrimary = isDark ? '#fff' : '#111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
+  const bg = 'var(--background)';
+  const cardBg = 'var(--card)';
+  const border = 'var(--border)';
+  const textPrimary = 'var(--foreground)';
+  const textMuted = 'var(--muted-foreground)';
 
   const answered = answers.filter((a) => a !== null).length;
   const score = answers.reduce((sum, a, i) => (a === questions[i].correct ? sum + 1 : sum), 0);
@@ -257,7 +255,7 @@ export default function ExamInterfacePage() {
   if (phase === 'start') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-20"
-        style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+        style={{ backgroundColor: bg, fontFamily: 'var(--ace-font)' }}>
         <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4 }}
           className="max-w-lg w-full rounded-3xl overflow-hidden shadow-2xl"
@@ -266,7 +264,7 @@ export default function ExamInterfacePage() {
             style={{ background: 'linear-gradient(135deg,#050D1A,#0A1628)' }}>
             <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '18px 18px' }} />
             <div className="text-center relative z-10">
-              <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#00A2B6' }}>Practice Exam</p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: 'var(--ace-brand)' }}>Practice Exam</p>
               <h1 className="text-2xl font-black text-white uppercase">{id.toUpperCase()}</h1>
             </div>
           </div>
@@ -279,8 +277,8 @@ export default function ExamInterfacePage() {
                 { icon: BarChart2, value: '70%', label: 'Pass Mark' },
               ].map(({ icon: Icon, value, label }) => (
                 <div key={label} className="text-center rounded-2xl py-4"
-                  style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.04)' : '#f9fafb' }}>
-                  <Icon className="h-5 w-5 mx-auto mb-2" style={{ color: '#00A2B6' }} />
+                  style={{ backgroundColor: 'var(--muted)' }}>
+                  <Icon className="h-5 w-5 mx-auto mb-2" style={{ color: 'var(--ace-brand)' }} />
                   <p className="font-black text-xl" style={{ color: textPrimary }}>{value}</p>
                   <p className="text-xs mt-0.5" style={{ color: textMuted }}>{label}</p>
                 </div>
@@ -288,7 +286,7 @@ export default function ExamInterfacePage() {
             </div>
 
             <div className="rounded-2xl px-5 py-4 mb-8"
-              style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.04)' : '#f9fafb', border: `1px solid ${border}` }}>
+              style={{ backgroundColor: 'var(--muted)', border: `1px solid ${border}` }}>
               <p className="text-xs font-semibold mb-2" style={{ color: textPrimary }}>Before you begin:</p>
               <ul className="flex flex-col gap-1.5">
                 {[
@@ -298,7 +296,7 @@ export default function ExamInterfacePage() {
                   'You can review your answers before submitting',
                 ].map((tip) => (
                   <li key={tip} className="flex items-start gap-2 text-xs" style={{ color: textMuted }}>
-                    <span className="w-1.5 h-1.5 rounded-full mt-1 flex-shrink-0" style={{ backgroundColor: '#00A2B6' }} />
+                    <span className="w-1.5 h-1.5 rounded-full mt-1 flex-shrink-0" style={{ backgroundColor: 'var(--ace-brand)' }} />
                     {tip}
                   </li>
                 ))}
@@ -307,7 +305,7 @@ export default function ExamInterfacePage() {
 
             <button onClick={startExam}
               className="w-full py-4 rounded-2xl text-base font-bold text-white transition-all active:scale-[0.97]"
-              style={{ backgroundColor: '#00A2B6', boxShadow: '0 4px 20px rgba(0,162,182,0.35)' }}>
+              style={{ backgroundColor: 'var(--ace-brand)', boxShadow: '0 4px 20px rgba(0,162,182,0.35)' }}>
               Start Exam →
             </button>
             <Link to="/practice-exams"
@@ -331,7 +329,7 @@ export default function ExamInterfacePage() {
     });
 
     return (
-      <div className="min-h-screen pt-20 sm:pt-24 pb-20 px-4" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+      <div className="min-h-screen pt-20 sm:pt-24 pb-20 px-4" style={{ backgroundColor: bg, fontFamily: 'var(--ace-font)' }}>
         <div className="max-w-3xl mx-auto">
           <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4 }}>
             {/* Score card */}
@@ -351,13 +349,13 @@ export default function ExamInterfacePage() {
               <div className="p-6 sm:p-8">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
                   {[
-                    { label: 'Score', value: `${score}/${questions.length}`, color: '#00A2B6' },
+                    { label: 'Score', value: `${score}/${questions.length}`, color: 'var(--ace-brand)' },
                     { label: 'Correct', value: score, color: '#059669' },
                     { label: 'Incorrect', value: questions.length - score, color: '#dc2626' },
                     { label: 'Pass Mark', value: '70%', color: textMuted },
                   ].map(({ label, value, color }) => (
                     <div key={label} className="text-center rounded-2xl py-4"
-                      style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.04)' : '#f9fafb' }}>
+                      style={{ backgroundColor: 'var(--muted)' }}>
                       <p className="font-black text-xl" style={{ color }}>{value}</p>
                       <p className="text-xs mt-0.5" style={{ color: textMuted }}>{label}</p>
                     </div>
@@ -375,7 +373,7 @@ export default function ExamInterfacePage() {
                           <span style={{ color: textMuted }}>{domain}</span>
                           <span style={{ color: dpct >= 70 ? '#059669' : '#dc2626' }}>{dpct}%</span>
                         </div>
-                        <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb' }}>
+                        <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--border)' }}>
                           <motion.div className="h-full rounded-full"
                             initial={{ width: 0 }} animate={{ width: `${dpct}%` }}
                             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -389,12 +387,12 @@ export default function ExamInterfacePage() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button onClick={() => { setPhase('review'); setReviewIdx(0); }}
                     className="flex-1 py-3.5 rounded-2xl text-sm font-bold transition-all active:scale-[0.97]"
-                    style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#f3f4f6', color: textPrimary }}>
+                    style={{ backgroundColor: 'var(--muted)', color: textPrimary }}>
                     <BookOpen className="h-4 w-4 inline mr-2" /> Review Answers
                   </button>
                   <button onClick={restart}
                     className="flex-1 py-3.5 rounded-2xl text-sm font-bold text-white transition-all active:scale-[0.97]"
-                    style={{ backgroundColor: '#00A2B6' }}>
+                    style={{ backgroundColor: 'var(--ace-brand)' }}>
                     <RotateCcw className="h-4 w-4 inline mr-2" /> Retake Exam
                   </button>
                 </div>
@@ -413,7 +411,7 @@ export default function ExamInterfacePage() {
     const isCorrect = userAns === q.correct;
 
     return (
-      <div className="min-h-screen pt-20 sm:pt-24 pb-20 px-4" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+      <div className="min-h-screen pt-20 sm:pt-24 pb-20 px-4" style={{ backgroundColor: bg, fontFamily: 'var(--ace-font)' }}>
         <div className="max-w-2xl mx-auto">
           {/* Nav */}
           <div className="flex items-center justify-between mb-6">
@@ -429,7 +427,7 @@ export default function ExamInterfacePage() {
             <div className="p-6 sm:p-8">
               <div className="flex items-center gap-2 mb-4">
                 <span className="px-2.5 py-1 rounded-full text-xs font-semibold"
-                  style={{ backgroundColor: 'rgba(0,162,182,0.12)', color: '#00A2B6' }}>{q.domain}</span>
+                  style={{ backgroundColor: 'rgba(0,162,182,0.12)', color: 'var(--ace-brand)' }}>{q.domain}</span>
                 {isCorrect
                   ? <CheckCircle2 className="h-4 w-4 ml-auto" style={{ color: '#059669' }} />
                   : <XCircle className="h-4 w-4 ml-auto" style={{ color: '#dc2626' }} />}
@@ -441,7 +439,7 @@ export default function ExamInterfacePage() {
                 {q.options.map((opt, i) => {
                   const isUserChoice = userAns === i;
                   const isAnswer = q.correct === i;
-                  let bg2 = isDark ? 'rgba(255,255,255,0.04)' : '#f9fafb';
+                  let bg2 = 'var(--muted)';
                   let bdr = border;
                   let col = textMuted;
                   if (isAnswer) { bg2 = 'rgba(5,150,105,0.12)'; bdr = '#059669'; col = '#059669'; }
@@ -450,7 +448,7 @@ export default function ExamInterfacePage() {
                     <div key={i} className="flex items-start gap-3 px-5 py-4 rounded-2xl"
                       style={{ backgroundColor: bg2, border: `1.5px solid ${bdr}` }}>
                       <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
-                        style={{ backgroundColor: isAnswer ? '#059669' : isUserChoice ? '#dc2626' : isDark ? 'rgba(255,255,255,0.08)' : '#e5e7eb', color: (isAnswer || isUserChoice) ? '#fff' : textMuted }}>
+                        style={{ backgroundColor: isAnswer ? '#059669' : isUserChoice ? '#dc2626' : 'var(--border)', color: (isAnswer || isUserChoice) ? '#fff' : textMuted }}>
                         {String.fromCharCode(65 + i)}
                       </div>
                       <span className="text-sm leading-relaxed" style={{ color: col }}>{opt}</span>
@@ -462,8 +460,8 @@ export default function ExamInterfacePage() {
               </div>
 
               {/* Explanation */}
-              <div className="rounded-2xl px-5 py-4" style={{ backgroundColor: isDark ? 'rgba(0,162,182,0.08)' : 'rgba(0,162,182,0.06)' }}>
-                <p className="text-xs font-bold mb-1.5" style={{ color: '#00A2B6' }}>Explanation</p>
+              <div className="rounded-2xl px-5 py-4" style={{ backgroundColor: 'var(--ace-brand-light)' }}>
+                <p className="text-xs font-bold mb-1.5" style={{ color: 'var(--ace-brand)' }}>Explanation</p>
                 <p className="text-sm leading-relaxed" style={{ color: textMuted }}>{q.explanation}</p>
               </div>
             </div>
@@ -492,10 +490,10 @@ export default function ExamInterfacePage() {
   const progressPct = (answered / questions.length) * 100;
 
   return (
-    <div className="min-h-screen pt-16 pb-32 px-4" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+    <div className="min-h-screen pt-16 pb-32 px-4" style={{ backgroundColor: bg, fontFamily: 'var(--ace-font)' }}>
       {/* Fixed top bar */}
       <div className="fixed top-0 left-0 right-0 z-50"
-        style={{ backgroundColor: isDark ? 'rgba(5,5,5,0.97)' : 'rgba(255,255,255,0.97)', borderBottom: `1px solid ${border}`, backdropFilter: 'blur(20px)' }}>
+        style={{ backgroundColor: 'var(--background)', borderBottom: `1px solid ${border}`, backdropFilter: 'blur(20px)' }}>
         <div className="max-w-3xl mx-auto px-4 h-20 flex items-center gap-4">
           <div className="flex flex-col justify-center min-w-0">
             <div className="text-xs font-semibold uppercase tracking-widest" style={{ color: textMuted }}>Practice</div>
@@ -506,12 +504,12 @@ export default function ExamInterfacePage() {
               <span>{answered}/{questions.length} answered</span>
               <span>{Math.round(progressPct)}%</span>
             </div>
-            <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#e5e7eb' }}>
+            <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--border)' }}>
               <motion.div className="h-full rounded-full" animate={{ width: `${progressPct}%` }}
-                transition={{ duration: 0.3 }} style={{ backgroundColor: '#00A2B6' }} />
+                transition={{ duration: 0.3 }} style={{ backgroundColor: 'var(--ace-brand)' }} />
             </div>
           </div>
-          <CircularTimer timeLeft={timeLeft} totalTime={DURATION} isDark={isDark} />
+          <CircularTimer timeLeft={timeLeft} totalTime={DURATION} />
         </div>
       </div>
 
@@ -533,7 +531,7 @@ export default function ExamInterfacePage() {
                   <button key={i} onClick={() => setCurrent(i)}
                     className="h-8 w-full rounded-lg text-xs font-semibold transition-all"
                     style={{
-                      backgroundColor: isCurr ? '#00A2B6' : isFlagged ? 'rgba(245,158,11,0.2)' : isAns ? 'rgba(5,150,105,0.15)' : isDark ? 'rgba(255,255,255,0.06)' : '#f3f4f6',
+                      backgroundColor: isCurr ? 'var(--ace-brand)' : isFlagged ? 'rgba(245,158,11,0.2)' : isAns ? 'rgba(5,150,105,0.15)' : 'var(--muted)',
                       color: isCurr ? '#fff' : isFlagged ? '#D97706' : isAns ? '#059669' : textMuted,
                       border: isCurr ? 'none' : isFlagged ? '1.5px solid #D97706' : 'none',
                     }}>
@@ -545,7 +543,7 @@ export default function ExamInterfacePage() {
             <div className="mt-4 flex flex-col gap-2 text-xs" style={{ color: textMuted }}>
               <div className="flex items-center gap-2"><div className="w-4 h-4 rounded" style={{ backgroundColor: 'rgba(5,150,105,0.15)' }} /> Answered</div>
               <div className="flex items-center gap-2"><div className="w-4 h-4 rounded" style={{ backgroundColor: 'rgba(245,158,11,0.2)', border: '1.5px solid #D97706' }} /> Flagged</div>
-              <div className="flex items-center gap-2"><div className="w-4 h-4 rounded" style={{ backgroundColor: '#00A2B6' }} /> Current</div>
+              <div className="flex items-center gap-2"><div className="w-4 h-4 rounded" style={{ backgroundColor: 'var(--ace-brand)' }} /> Current</div>
             </div>
           </div>
 
@@ -559,11 +557,11 @@ export default function ExamInterfacePage() {
               <div className="p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-wide" style={{ color: '#00A2B6' }}>
+                    <span className="text-xs font-bold uppercase tracking-wide" style={{ color: 'var(--ace-brand)' }}>
                       Q{current + 1} / {questions.length}
                     </span>
                     <span className="px-2.5 py-1 rounded-full text-xs font-semibold"
-                      style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#f3f4f6', color: textMuted }}>
+                      style={{ backgroundColor: 'var(--muted)', color: textMuted }}>
                       {q.domain}
                     </span>
                   </div>
@@ -586,15 +584,15 @@ export default function ExamInterfacePage() {
                         className="flex items-start gap-4 px-5 py-4 rounded-2xl text-left transition-all"
                         style={{
                           backgroundColor: selected
-                            ? isDark ? 'rgba(0,162,182,0.15)' : 'rgba(0,162,182,0.10)'
-                            : isDark ? 'rgba(255,255,255,0.04)' : '#f9fafb',
-                          border: `2px solid ${selected ? '#00A2B6' : border}`,
+                            ? 'var(--ace-brand-light)'
+                            : 'var(--muted)',
+                          border: `2px solid ${selected ? 'var(--ace-brand)' : border}`,
                         }}>
                         <div className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
-                          style={{ borderColor: selected ? '#00A2B6' : border, backgroundColor: selected ? '#00A2B6' : 'transparent', color: selected ? '#fff' : textMuted }}>
+                          style={{ borderColor: selected ? 'var(--ace-brand)' : border, backgroundColor: selected ? 'var(--ace-brand)' : 'transparent', color: selected ? '#fff' : textMuted }}>
                           {String.fromCharCode(65 + i)}
                         </div>
-                        <span className="text-sm leading-relaxed" style={{ color: selected ? (isDark ? '#fff' : '#111') : textMuted }}>{opt}</span>
+                        <span className="text-sm leading-relaxed" style={{ color: selected ? ('var(--foreground)') : textMuted }}>{opt}</span>
                       </motion.button>
                     );
                   })}
@@ -617,7 +615,7 @@ export default function ExamInterfacePage() {
                 ) : (
                   <button onClick={submitExam}
                     className="flex-1 py-4 text-sm font-bold flex items-center justify-center gap-2"
-                    style={{ color: '#00A2B6' }}>
+                    style={{ color: 'var(--ace-brand)' }}>
                     Submit Exam ✓
                   </button>
                 )}
@@ -629,10 +627,10 @@ export default function ExamInterfacePage() {
 
       {/* Mobile bottom bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center gap-3 px-4 py-3"
-        style={{ backgroundColor: isDark ? 'rgba(5,5,5,0.97)' : 'rgba(255,255,255,0.97)', borderTop: `1px solid ${border}`, backdropFilter: 'blur(16px)' }}>
+        style={{ backgroundColor: 'var(--background)', borderTop: `1px solid ${border}`, backdropFilter: 'blur(16px)' }}>
         <button onClick={() => setCurrent(Math.max(0, current - 1))} disabled={current === 0}
           className="w-10 h-10 rounded-full flex items-center justify-center transition-opacity"
-          style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#f3f4f6', color: textPrimary, opacity: current === 0 ? 0.4 : 1 }}>
+          style={{ backgroundColor: 'var(--muted)', color: textPrimary, opacity: current === 0 ? 0.4 : 1 }}>
           <ChevronLeft className="h-4 w-4" />
         </button>
         <div className="flex-1 text-center text-xs font-semibold" style={{ color: textMuted }}>
@@ -641,13 +639,13 @@ export default function ExamInterfacePage() {
         {current < questions.length - 1 ? (
           <button onClick={() => setCurrent(current + 1)}
             className="w-10 h-10 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: '#00A2B6', color: '#fff' }}>
+            style={{ backgroundColor: 'var(--ace-brand)', color: '#fff' }}>
             <ChevronRight className="h-4 w-4" />
           </button>
         ) : (
           <button onClick={submitExam}
             className="px-4 h-10 rounded-full text-sm font-bold text-white"
-            style={{ backgroundColor: '#00A2B6' }}>
+            style={{ backgroundColor: 'var(--ace-brand)' }}>
             Submit
           </button>
         )}

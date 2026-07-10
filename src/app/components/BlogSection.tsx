@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowRight, Clock } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 const ARTICLES = [
   { id: 0, tag: 'CYBERSECURITY', readTime: '8 min read', title: 'A Ranked Look at the Hardest CISSP Domains', excerpt: 'Breaking down all 8 CISSP domains by difficulty, with expert strategies for tackling the toughest sections in your exam prep.', color: '#dc2626', gradient: 'linear-gradient(135deg, #1e3a5f 0%, #0B1D3A 100%)' },
@@ -10,31 +9,23 @@ const ARTICLES = [
 ];
 
 export function BlogSection() {
-  const { isDark } = useTheme();
-
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
-  const textPrimary = isDark ? '#FFFFFF' : '#111827';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
-  const btnBorder = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,162,182,0.4)';
 
   return (
-    <section className="py-20 lg:py-28" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+    <section className="py-20 lg:py-28 bg-background" style={{ fontFamily: 'var(--ace-font)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#00A2B6' }}>Resources</p>
-            <h2 style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', fontWeight: 800, color: textPrimary }}>
+            <h2 className="text-foreground" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', fontWeight: 800 }}>
               What's New in IT Certification
             </h2>
-            <p className="mt-2" style={{ fontSize: '1.05rem', color: textMuted }}>
+            <p className="mt-2 text-muted-foreground" style={{ fontSize: '1.05rem' }}>
               Expert insights, career guides, and certification trends.
             </p>
           </div>
           <button
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all whitespace-nowrap flex-shrink-0"
-            style={{ border: `1px solid ${btnBorder}`, color: '#00A2B6' }}
+            style={{ border: '1px solid var(--ace-brand)', color: '#00A2B6' }}
           >
             View All Articles <ArrowRight className="h-4 w-4" />
           </button>
@@ -46,8 +37,8 @@ export function BlogSection() {
               key={article.id}
               className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer"
               style={{
-                backgroundColor: cardBg,
-                border: `1px solid ${cardBorder}`,
+                backgroundColor: 'var(--card)',
+                border: '1px solid var(--border)',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
               }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 16px 40px rgba(0,162,182,0.12)'; }}
@@ -65,14 +56,13 @@ export function BlogSection() {
 
               <div className="flex flex-col flex-1 p-5">
                 <h3
-                  className="mb-3 leading-snug transition-colors"
-                  style={{ fontSize: '0.95rem', fontWeight: 700, color: textPrimary }}
+                  className="mb-3 leading-snug transition-colors text-foreground" style={{ fontSize: '0.95rem', fontWeight: 700 }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#00A2B6')}
-                  onMouseLeave={e => (e.currentTarget.style.color = textPrimary)}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--foreground)')}
                 >
                   {article.title}
                 </h3>
-                <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: textMuted }}>
+                <p className="text-sm leading-relaxed flex-1 mb-4 text-muted-foreground">
                   {article.excerpt}
                 </p>
                 <div className="inline-flex items-center gap-1.5 text-sm font-semibold" style={{ color: '#00A2B6' }}>

@@ -63,7 +63,7 @@ export function Footer() {
     <footer
       style={{
         background: 'linear-gradient(180deg, #050505 0%, #050508 100%)',
-        fontFamily: 'Inter, sans-serif',
+        fontFamily: 'var(--ace-font)',
       }}
     >
       {/* Newsletter strip */}

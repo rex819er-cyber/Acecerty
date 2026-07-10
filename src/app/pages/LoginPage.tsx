@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, ArrowRight, Shield, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { AcecertyLogo } from '../components/AcecertyLogo';
-import { useTheme } from '../context/ThemeContext';
 
 type Tab = 'signin' | 'signup';
 
@@ -22,13 +21,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-  const { isDark } = useTheme();
 
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,8 +35,7 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen flex"
-      style={{ fontFamily: 'Inter, sans-serif', backgroundColor: bg }}
+      className="min-h-screen flex bg-background" style={{ fontFamily: 'var(--ace-font)' }}
     >
       {/* Left panel – brand (always dark) */}
       <div
@@ -94,14 +86,13 @@ export default function LoginPage() {
 
       {/* Right panel – form */}
       <div
-        className="flex-1 flex items-center justify-center p-6"
-        style={{ backgroundColor: bg }}
+        className="flex-1 flex items-center justify-center p-6 bg-background"
       >
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="lg:hidden mb-8 flex justify-center">
             <Link to="/">
-              <AcecertyLogo isDark={isDark} height={28} />
+              <AcecertyLogo height={28} />
             </Link>
           </div>
 
@@ -113,20 +104,18 @@ export default function LoginPage() {
               >
                 <CheckCircle className="h-10 w-10" style={{ color: '#00A2B6' }} />
               </div>
-              <h2 className="mb-2" style={{ fontSize: '1.5rem', fontWeight: 700, color: textPrimary }}>
+              <h2 className="mb-2 text-foreground" style={{ fontSize: '1.5rem', fontWeight: 700 }}>
                 {tab === 'signin' ? 'Welcome back!' : 'Account created!'}
               </h2>
-              <p className="text-sm" style={{ color: textMuted }}>Redirecting you now…</p>
+              <p className="text-sm text-muted-foreground">Redirecting you now…</p>
             </div>
           ) : (
             <div
-              className="rounded-3xl shadow-xl p-8"
-              style={{ backgroundColor: cardBg, border: `1px solid ${cardBorder}` }}
+              className="rounded-3xl shadow-xl p-8 bg-card border border-border"
             >
               {/* Tabs */}
               <div
-                className="flex rounded-xl p-1 mb-8"
-                style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#F3F4F6' }}
+                className="flex rounded-xl p-1 mb-8 bg-muted"
               >
                 {(['signin', 'signup'] as Tab[]).map((t) => (
                   <button
@@ -134,8 +123,8 @@ export default function LoginPage() {
                     onClick={() => setTab(t)}
                     className="flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200"
                     style={{
-                      backgroundColor: tab === t ? (isDark ? '#1A1A1A' : '#fff') : 'transparent',
-                      color: tab === t ? '#00A2B6' : textMuted,
+                      backgroundColor: tab === t ? 'var(--card)' : 'transparent',
+                      color: tab === t ? 'var(--ace-brand)' : 'var(--muted-foreground)',
                       boxShadow: tab === t ? '0 1px 4px rgba(0,0,0,0.15)' : 'none',
                     }}
                   >

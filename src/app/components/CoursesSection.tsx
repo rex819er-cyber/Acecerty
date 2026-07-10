@@ -237,7 +237,7 @@ export function CoursesSection() {
       ref={sectionRef}
       id="courses"
       className="py-20 lg:py-28"
-      style={{ backgroundColor: '#F8FAFC', fontFamily: 'Inter, sans-serif' }}
+      style={{ backgroundColor: '#F8FAFC', fontFamily: 'var(--ace-font)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

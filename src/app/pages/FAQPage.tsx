@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, HelpCircle, BookOpen, Ticket, ClipboardCheck, CreditCard, Shield } from 'lucide-react';
 import { Link } from 'react-router';
-import { useTheme } from '../context/ThemeContext';
 
 interface FAQItem {
   q: string;
@@ -129,24 +128,20 @@ const FAQ_CATEGORIES: FAQCategory[] = [
   },
 ];
 
-function AccordionItem({ item, isOpen, onToggle, isDark }: { item: FAQItem; isOpen: boolean; onToggle: () => void; isDark: boolean }) {
-  const borderColor = isDark ? 'rgba(255,255,255,0.06)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.50)' : '#6b7280';
-
+function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: boolean; onToggle: () => void }) {
   return (
-    <div className="border-b last:border-b-0" style={{ borderColor }}>
+    <div className="border-b border-border last:border-b-0">
       <button
         onClick={onToggle}
         className="w-full flex items-start justify-between gap-4 py-5 px-1 text-left transition-colors"
-        style={{ color: isOpen ? '#00A2B6' : textPrimary }}
+        style={{ color: isOpen ? 'var(--ace-brand)' : 'var(--foreground)' }}
       >
         <span style={{ fontSize: '0.9375rem', fontWeight: 600, lineHeight: 1.5 }}>{item.q}</span>
         <div
           className="flex-shrink-0 h-6 w-6 rounded-full flex items-center justify-center transition-all mt-0.5"
           style={{
-            backgroundColor: isOpen ? '#00A2B6' : (isDark ? 'rgba(255,255,255,0.08)' : '#f3f4f6'),
-            color: isOpen ? '#fff' : textMuted,
+            backgroundColor: isOpen ? 'var(--ace-brand)' : 'var(--muted)',
+            color: isOpen ? '#fff' : 'var(--muted-foreground)',
             transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
           }}
         >
@@ -156,7 +151,7 @@ function AccordionItem({ item, isOpen, onToggle, isDark }: { item: FAQItem; isOp
 
       {isOpen && (
         <div className="pb-5 px-1">
-          <p className="leading-relaxed" style={{ fontSize: '0.9rem', color: textMuted }}>{item.a}</p>
+          <p className="leading-relaxed text-muted-foreground" style={{ fontSize: '0.9rem' }}>{item.a}</p>
         </div>
       )}
     </div>
@@ -166,24 +161,17 @@ function AccordionItem({ item, isOpen, onToggle, isDark }: { item: FAQItem; isOp
 export default function FAQPage() {
   const [activeCategory, setActiveCategory] = useState(0);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const { isDark } = useTheme();
-
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.07)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : '#6b7280';
 
   const category = FAQ_CATEGORIES[activeCategory];
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}>
+    <div className="min-h-screen bg-background" style={{ fontFamily: 'var(--ace-font)' }}>
       {/* Hero */}
       <div style={{ background: 'linear-gradient(135deg,#050D1A 0%,#0A1628 100%)' }} className="pt-24 sm:pt-28 pb-14 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2 mb-4">
-            <HelpCircle className="h-5 w-5" style={{ color: '#00A2B6' }} />
-            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#00A2B6' }}>Help Centre</p>
+            <HelpCircle className="h-5 w-5" style={{ color: 'var(--ace-brand)' }} />
+            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--ace-brand)' }}>Help Centre</p>
           </div>
           <h1 className="text-white mb-3 leading-tight" style={{ fontSize: 'clamp(1.8rem,4vw,3rem)', fontWeight: 800 }}>
             Frequently Asked Questions
@@ -198,7 +186,7 @@ export default function FAQPage() {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Category sidebar */}
           <aside className="lg:w-56 flex-shrink-0">
-            <p className="text-xs font-bold uppercase tracking-wider mb-3 px-1" style={{ color: textMuted }}>Topics</p>
+            <p className="text-xs font-bold uppercase tracking-wider mb-3 px-1 text-muted-foreground">Topics</p>
             <div className="relative flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
               {FAQ_CATEGORIES.map((cat, i) => {
                 const Icon = cat.icon;
@@ -209,12 +197,12 @@ export default function FAQPage() {
                     onClick={() => { setActiveCategory(i); setOpenIndex(0); }}
                     className="flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold whitespace-nowrap lg:whitespace-normal text-left transition-all flex-shrink-0 lg:flex-shrink"
                     style={{
-                      backgroundColor: active ? '#00A2B6' : cardBg,
-                      color: active ? '#fff' : textPrimary,
-                      border: `1px solid ${active ? '#00A2B6' : cardBorder}`,
+                      backgroundColor: active ? 'var(--ace-brand)' : 'var(--card)',
+                      color: active ? '#fff' : 'var(--foreground)',
+                      border: `1px solid ${active ? 'var(--ace-brand)' : 'var(--border)'}`,
                     }}
                   >
-                    <Icon className="h-4 w-4 flex-shrink-0" style={{ color: active ? '#fff' : textMuted }} />
+                    <Icon className="h-4 w-4 flex-shrink-0" style={{ color: active ? '#fff' : 'var(--muted-foreground)' }} />
                     {cat.label}
                   </button>
                 );
@@ -232,19 +220,18 @@ export default function FAQPage() {
                 <category.icon className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: textPrimary }}>{category.label}</h2>
-                <p className="text-sm" style={{ color: textMuted }}>{category.items.length} questions</p>
+                <h2 className="text-foreground" style={{ fontSize: '1.25rem', fontWeight: 700 }}>{category.label}</h2>
+                <p className="text-sm text-muted-foreground">{category.items.length} questions</p>
               </div>
             </div>
 
-            <div className="rounded-2xl shadow-sm px-6" style={{ backgroundColor: cardBg, border: `1px solid ${cardBorder}` }}>
+            <div className="rounded-2xl shadow-sm px-6 bg-card border border-border">
               {category.items.map((item, i) => (
                 <AccordionItem
                   key={i}
                   item={item}
                   isOpen={openIndex === i}
                   onToggle={() => setOpenIndex(openIndex === i ? null : i)}
-                  isDark={isDark}
                 />
               ))}
             </div>
@@ -268,7 +255,7 @@ export default function FAQPage() {
                 <Link
                   to="/courses"
                   className="px-5 py-2.5 rounded-full text-sm font-semibold text-white hover:opacity-90 transition-opacity"
-                  style={{ backgroundColor: '#00A2B6' }}
+                  style={{ backgroundColor: 'var(--ace-brand)' }}
                 >
                   Browse Courses
                 </Link>

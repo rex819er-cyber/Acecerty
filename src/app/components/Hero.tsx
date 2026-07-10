@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { ArrowRight, Shield, CheckCircle, Users, Star, Award } from 'lucide-react';
 import { VideoPreview, VideoModal } from './VideoModal';
-import { useTheme } from '../context/ThemeContext';
 import { ConstellationCanvas } from './ConstellationCanvas';
 
 const STATS = [
@@ -45,20 +44,10 @@ function AnimatedCounter({ value, label, icon: Icon }: { value: string; label: s
 
 export function Hero() {
   const [modalOpen, setModalOpen] = useState(false);
-  const { isDark } = useTheme();
-
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const textPrimary = isDark ? '#FFFFFF' : '#111111';
-  const textMuted = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)';
-  const cardBg = isDark ? 'rgba(14,14,14,0.95)' : 'rgba(255,255,255,0.95)';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
-  const badgeBg = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)';
-  const badgeBorder = isDark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.08)';
-  const dividerColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
 
   return (
     <section
-      style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif', minHeight: '100vh', color: textPrimary }}
+      className="bg-background text-foreground" style={{ fontFamily: 'var(--ace-font)', minHeight: '100vh' }}
       className="relative flex items-center pt-16 sm:pt-20 overflow-hidden"
     >
       {/* Constellation particle engine (System K) */}
@@ -71,9 +60,7 @@ export function Hero() {
           width: 600,
           height: 600,
           borderRadius: '50%',
-          background: isDark
-            ? 'radial-gradient(circle, rgba(0,162,182,0.14) 0%, transparent 65%)'
-            : 'radial-gradient(circle, rgba(0,162,182,0.08) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, var(--ace-brand-glow) 0%, transparent 65%)',
           filter: 'blur(40px)',
         }}
       />
@@ -83,9 +70,7 @@ export function Hero() {
           width: 500,
           height: 500,
           borderRadius: '50%',
-          background: isDark
-            ? 'radial-gradient(circle, rgba(0,162,182,0.07) 0%, transparent 65%)'
-            : 'radial-gradient(circle, rgba(0,162,182,0.05) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(0,162,182,0.07) 0%, transparent 65%)',
           filter: 'blur(60px)',
         }}
       />
@@ -100,14 +85,13 @@ export function Hero() {
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.02 }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6"
-              style={{ backgroundColor: badgeBg, border: `1px solid ${badgeBorder}` }}
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6 bg-muted border border-border"
             >
               <span
                 className="h-2 w-2 rounded-full animate-pulse flex-shrink-0"
                 style={{ backgroundColor: '#22c55e' }}
               />
-              <span className="text-xs font-semibold" style={{ color: textMuted }}>
+              <span className="text-xs font-semibold text-muted-foreground">
                 Classes now enrolling · July 2026
               </span>
             </motion.div>
@@ -118,7 +102,6 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.07, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                color: textPrimary,
                 fontSize: 'clamp(2.6rem, 5.5vw, 4.8rem)',
                 fontWeight: 900,
                 lineHeight: 1.04,
@@ -129,7 +112,7 @@ export function Hero() {
               Learn Today.
               <br />
               <span style={{ color: '#00A2B6' }}>Lead Tomorrow.</span>
-              <span style={{ color: textMuted, fontSize: '0.7em' }}>™</span>
+              <span className="text-muted-foreground" style={{ fontSize: '0.7em' }}>™</span>
             </motion.h1>
 
             {/* Sub */}
@@ -137,8 +120,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.14 }}
-              className="mb-8 max-w-lg leading-relaxed"
-              style={{ color: textMuted, fontSize: '1.08rem' }}
+              className="mb-8 max-w-lg leading-relaxed text-muted-foreground" style={{ fontSize: '1.08rem' }}
             >
               Accelerated IT certification training designed to unlock new skills,
               fast-track your career, and deliver results — today, not someday.
@@ -149,11 +131,10 @@ export function Hero() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.18 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-7"
-              style={{ backgroundColor: badgeBg, border: `1px solid ${badgeBorder}` }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-7 bg-muted border border-border"
             >
               <CheckCircle className="h-4 w-4 flex-shrink-0" style={{ color: '#22c55e' }} />
-              <span className="text-xs font-semibold" style={{ color: textPrimary }}>
+              <span className="text-xs font-semibold text-foreground">
                 Exam-Day Ready · Free Retake Guarantee · ₦60,000 Flat Rate
               </span>
             </motion.div>
@@ -177,12 +158,11 @@ export function Hero() {
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold transition-all active:scale-95"
                 style={{
                   fontSize: '0.92rem',
-                  color: textPrimary,
-                  backgroundColor: badgeBg,
-                  border: `1px solid ${badgeBorder}`,
+                    backgroundColor: 'var(--muted)',
+                  border: '1px solid var(--border)',
                 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#00A2B6'; (e.currentTarget as HTMLElement).style.color = '#00A2B6'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = badgeBorder; (e.currentTarget as HTMLElement).style.color = textPrimary; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--foreground)'; }}
               >
                 View Training
               </a>
@@ -198,7 +178,7 @@ export function Hero() {
               {STATS.map((s, i) => (
                 <React.Fragment key={s.label}>
                   {i > 0 && (
-                    <div className="h-8 w-px hidden sm:block" style={{ backgroundColor: dividerColor }} />
+                    <div className="h-8 w-px hidden sm:block bg-border" />
                   )}
                   <AnimatedCounter value={s.value} label={s.label} icon={s.icon} />
                 </React.Fragment>
@@ -228,26 +208,7 @@ export function Hero() {
               
 
               {/* Floating badge: Certs */}
-              <motion.div
-                initial={{ opacity: 0, x: 16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="absolute -top-5 -right-5 rounded-2xl px-4 py-3 shadow-2xl"
-                style={{ backgroundColor: cardBg, border: `1px solid ${cardBorder}`, backdropFilter: 'blur(16px)' }}
-              >
-                <p className="text-xs mb-2 font-medium" style={{ color: textMuted }}>Top Certifications</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {CERT_BADGES.slice(0, 4).map((c) => (
-                    <span
-                      key={c}
-                      className="px-2 py-0.5 rounded-lg text-[10px] font-bold text-white"
-                      style={{ backgroundColor: '#00A2B6' }}
-                    >
-                      {c}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
+              
 
               {/* Live indicator */}
               

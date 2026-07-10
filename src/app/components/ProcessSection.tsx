@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BookOpen, Target, Award, ArrowRight } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 const TABS = [
   {
@@ -31,22 +30,13 @@ const STEPS = [
 
 export function ProcessSection() {
   const [active, setActive] = useState('learn');
-  const { isDark } = useTheme();
   const tab = TABS.find((t) => t.id === active)!;
   const Icon = tab.icon;
 
-  const bg = isDark ? '#050505' : '#FAF9F6';
-  const cardBg = isDark ? '#0E0E0E' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : '#e5e7eb';
-  const textPrimary = isDark ? '#FFFFFF' : '#111827';
-  const textMuted = isDark ? 'rgba(255,255,255,0.50)' : '#6b7280';
-  const surfaceBg = isDark ? '#141414' : '#F8FAFC';
-  const tabBorder = isDark ? 'rgba(255,255,255,0.07)' : '#f3f4f6';
 
   return (
     <section
-      className="py-20 lg:py-28"
-      style={{ backgroundColor: bg, fontFamily: 'Inter, sans-serif' }}
+      className="py-20 lg:py-28 bg-background" style={{ fontFamily: 'var(--ace-font)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
@@ -54,12 +44,12 @@ export function ProcessSection() {
             How It Works
           </p>
           <h2
-            className="mb-4"
-            style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', fontWeight: 800, color: textPrimary }}
+            className="mb-4 text-foreground"
+            style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', fontWeight: 800 }}
           >
             Go from learning today to leading tomorrow.
           </h2>
-          <p className="max-w-xl mx-auto" style={{ fontSize: '1.05rem', color: textMuted }}>
+          <p className="max-w-xl mx-auto" style={{ fontSize: '1.05rem', color: 'var(--muted-foreground)' }}>
             Our proven three-step process has helped 250,000+ professionals earn their certifications and advance their careers.
           </p>
         </div>
@@ -71,20 +61,20 @@ export function ProcessSection() {
               key={step.num}
               className="relative p-8 rounded-2xl"
               style={{
-                backgroundColor: i === 1 ? '#00A2B6' : cardBg,
-                border: i === 1 ? 'none' : `1px solid ${cardBorder}`,
+                backgroundColor: i === 1 ? '#00A2B6' : 'var(--card)',
+                border: i === 1 ? 'none' : '1px solid var(--border)',
               }}
             >
               <div
                 className="text-5xl font-black mb-4 leading-none"
-                style={{ color: i === 1 ? 'rgba(255,255,255,0.25)' : (isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)') }}
+                style={{ color: i === 1 ? 'rgba(255,255,255,0.25)' : 'var(--border)' }}
               >
                 {step.num}
               </div>
-              <h3 className="mb-2" style={{ fontSize: '1.25rem', fontWeight: 700, color: i === 1 ? '#fff' : textPrimary }}>
+              <h3 className="mb-2" style={{ fontSize: '1.25rem', fontWeight: 700, color: i === 1 ? '#fff' : 'var(--foreground)' }}>
                 {step.label}
               </h3>
-              <p className="leading-relaxed" style={{ fontSize: '0.9rem', color: i === 1 ? 'rgba(255,255,255,0.75)' : textMuted }}>
+              <p className="leading-relaxed" style={{ fontSize: '0.9rem', color: i === 1 ? 'rgba(255,255,255,0.75)' : 'var(--muted-foreground)' }}>
                 {step.desc}
               </p>
               {i < STEPS.length - 1 && (
@@ -99,9 +89,9 @@ export function ProcessSection() {
         </div>
 
         {/* Tab panel */}
-        <div className="relative rounded-3xl overflow-hidden shadow-xl" style={{ border: `1px solid ${cardBorder}` }}>
+        <div className="relative rounded-3xl overflow-hidden shadow-xl border border-border">
           {/* Tabs */}
-          <div className="flex" style={{ backgroundColor: surfaceBg, borderBottom: `1px solid ${tabBorder}` }}>
+          <div className="flex bg-muted border-b border-border">
             {TABS.map((t) => {
               const TIcon = t.icon;
               const isActive = t.id === active;
@@ -112,8 +102,8 @@ export function ProcessSection() {
                   className="flex-1 flex items-center justify-center gap-2 py-5 px-4 text-sm font-semibold transition-all border-b-2"
                   style={{
                     borderBottomColor: isActive ? '#00A2B6' : 'transparent',
-                    color: isActive ? '#00A2B6' : textMuted,
-                    backgroundColor: isActive ? cardBg : 'transparent',
+                    color: isActive ? '#00A2B6' : 'var(--muted-foreground)',
+                    backgroundColor: isActive ? 'var(--card)' : 'transparent',
                   }}
                 >
                   <TIcon className="h-4 w-4" />
@@ -124,17 +114,17 @@ export function ProcessSection() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-0">
-            <div className="p-10 lg:p-14" style={{ backgroundColor: cardBg }}>
+            <div className="p-10 lg:p-14 bg-card">
               <div
                 className="h-14 w-14 rounded-2xl flex items-center justify-center mb-6"
                 style={{ backgroundColor: 'rgba(0,162,182,0.12)' }}
               >
                 <Icon className="h-7 w-7" style={{ color: '#00A2B6' }} />
               </div>
-              <h3 className="mb-4 leading-snug" style={{ fontSize: '1.5rem', fontWeight: 700, color: textPrimary }}>
+              <h3 className="mb-4 leading-snug" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--foreground)' }}>
                 {tab.heading}
               </h3>
-              <p className="leading-relaxed mb-8" style={{ fontSize: '1rem', color: textMuted }}>
+              <p className="leading-relaxed mb-8" style={{ fontSize: '1rem', color: 'var(--muted-foreground)' }}>
                 {tab.body}
               </p>
               <button
