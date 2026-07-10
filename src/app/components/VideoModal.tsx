@@ -39,7 +39,7 @@ export function VideoModal({ open, onClose }: VideoModalProps) {
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-4xl mx-8 flex items-center justify-center"
-            style={{ borderRadius: 16, overflow: 'hidden', aspectRatio: '16/9', backgroundColor: '#0a0f1a' }}
+            style={{ borderRadius: 16, overflow: 'hidden', position: 'relative', aspectRatio: '16/9', backgroundColor: '#0a0f1a' }}
           >
             {/* Placeholder — video content removed */}
             <div className="flex flex-col items-center gap-4 text-center px-8">

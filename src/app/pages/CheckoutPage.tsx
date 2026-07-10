@@ -287,7 +287,7 @@ export default function CheckoutPage() {
 
         <div className="grid lg:grid-cols-[1fr_360px] gap-8 items-start">
           {/* Form */}
-          <div className="rounded-3xl overflow-hidden" style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
+          <div className="relative rounded-3xl overflow-hidden" style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
             <AnimatePresence mode="wait">
               {step === 'details' ? (
                 <motion.div key="details" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }} transition={{ duration: 0.22 }}>
@@ -378,7 +378,7 @@ export default function CheckoutPage() {
                       {payMethod === 'card' && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }}
-                          style={{ overflow: 'hidden' }}
+                          style={{ overflow: 'hidden', position: 'relative' }}
                           className="mb-6">
                           <div className="flex items-center gap-2 mb-4">
                             <VisaIcon />

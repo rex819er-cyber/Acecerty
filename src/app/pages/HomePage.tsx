@@ -57,7 +57,7 @@ export default function HomePage() {
   const heroOpacity = useTransform(scrollY, [0, 350, 650], shouldReduceMotion ? [1, 1, 1] : [1, 1, 0.5]);
 
   return (
-    <div style={{ overflowX: 'hidden', backgroundColor: isDark ? '#050505' : '#FAF9F6' }}>
+    <div style={{ overflowX: 'hidden', position: 'relative', backgroundColor: isDark ? '#050505' : '#FAF9F6' }}>
       <div ref={heroRef} style={{ position: 'relative', zIndex: 1 }}>
         <motion.div style={{ scale: heroScale, opacity: heroOpacity }}>
           <Hero />

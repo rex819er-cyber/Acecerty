@@ -99,7 +99,7 @@ export function ProcessSection() {
         </div>
 
         {/* Tab panel */}
-        <div className="rounded-3xl overflow-hidden shadow-xl" style={{ border: `1px solid ${cardBorder}` }}>
+        <div className="relative rounded-3xl overflow-hidden shadow-xl" style={{ border: `1px solid ${cardBorder}` }}>
           {/* Tabs */}
           <div className="flex" style={{ backgroundColor: surfaceBg, borderBottom: `1px solid ${tabBorder}` }}>
             {TABS.map((t) => {

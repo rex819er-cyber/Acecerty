@@ -82,26 +82,6 @@ export function MouseFollower() {
       />
 
       {/* Ring cursor */}
-      <motion.div
-        style={{
-          x: ringX,
-          y: ringY,
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: 40,
-          height: 40,
-          borderRadius: '50%',
-          border: `1.5px solid ${isHoveringInteractive ? accent : isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.18)'}`,
-          pointerEvents: 'none',
-          zIndex: 9998,
-          opacity: visible ? 1 : 0,
-          scale: isHoveringInteractive ? 1.6 : 1,
-          transition: 'opacity 0.3s ease, scale 0.2s ease, border-color 0.2s ease',
-          mixBlendMode: isDark ? 'screen' : 'multiply',
-        }}
-      />
-
       {/* Dot */}
       <motion.div
         style={{

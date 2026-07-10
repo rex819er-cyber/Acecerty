@@ -46,7 +46,7 @@ function ModuleRow({ mod, index, defaultOpen }: { mod: CurriculumModule; index: 
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            style={{ overflow: 'hidden' }}
+            style={{ overflow: 'hidden', position: 'relative' }}
           >
             <ul className="px-5 pb-4 flex flex-col gap-2">
               {mod.lessons.map((lesson, i) => (

@@ -425,7 +425,7 @@ export default function ExamInterfacePage() {
             </span>
           </div>
 
-          <div className="rounded-3xl overflow-hidden shadow-xl" style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
+          <div className="relative rounded-3xl overflow-hidden shadow-xl" style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
             <div className="p-6 sm:p-8">
               <div className="flex items-center gap-2 mb-4">
                 <span className="px-2.5 py-1 rounded-full text-xs font-semibold"

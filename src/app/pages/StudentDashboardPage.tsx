@@ -124,7 +124,7 @@ function CourseProgressCard({ course, isDark, border, cardBg, textPrimary, textM
   isDark: boolean; border: string; cardBg: string; textPrimary: string; textMuted: string;
 }) {
   return (
-    <motion.div whileHover={{ y: -2 }} className="rounded-2xl overflow-hidden"
+    <motion.div whileHover={{ y: -2 }} className="relative rounded-2xl overflow-hidden"
       style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
       <div className="h-2 w-full" style={{ background: course.gradient }} />
       <div className="p-5">
@@ -325,7 +325,7 @@ export default function StudentDashboardPage() {
             <motion.div key="exams"
               initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}>
-              <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
+              <div className="relative rounded-2xl overflow-hidden" style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}>
                 <div className="p-6 border-b" style={{ borderColor: border }}>
                   <h2 className="font-black text-lg" style={{ color: textPrimary }}>Exam Performance History</h2>
                   <p className="text-sm mt-1" style={{ color: textMuted }}>Track your progress across all practice exams</p>
@@ -389,7 +389,7 @@ export default function StudentDashboardPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 {CERTIFICATES.map((cert) => (
                   <motion.div key={cert.id} whileHover={{ y: -4 }}
-                    className="rounded-2xl overflow-hidden shadow-xl"
+                    className="relative rounded-2xl overflow-hidden shadow-xl"
                     style={{ border: `1px solid ${border}` }}>
                     <div className="h-28 relative flex items-center justify-center" style={{ background: cert.gradient }}>
                       <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '14px 14px' }} />

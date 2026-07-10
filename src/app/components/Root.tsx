@@ -11,7 +11,7 @@ export function Root() {
   const isExam = location.pathname.startsWith('/practice-exams/');
 
   return (
-    <div style={{ fontFamily: 'Inter, sans-serif', cursor: 'none' }}>
+    <div style={{ fontFamily: 'var(--ace-font)', cursor: 'none' }}>
       <MouseFollower />
       <Header />
       <main>
